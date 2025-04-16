@@ -33,13 +33,17 @@
         }
         
         #splash {
-            background: linear-gradient(rgba(80, 109, 47, 0.3), rgba(139, 90, 43, 0.3)), 
+            background: linear-gradient(rgba(80, 109, 47, 0.4), rgba(139, 90, 43, 0.4)), 
                         url('/api/placeholder/1200/800') 
                         no-repeat center center;
             background-size: cover;
             transition: opacity 1s ease;
             height: 100vh;
             width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
         }
         
         .navbar {
@@ -73,6 +77,10 @@
         
         .event-wedding {
             background-color: #DCEDC2;
+        }
+        
+        .event-main-wedding {
+            background-color: #FFD6BA;
         }
         
         .photo-btn {
@@ -186,6 +194,7 @@
             top: -20px;
             font-size: 24px;
             animation: fall linear, sway 3s ease-in-out infinite alternate;
+            pointer-events: none;
         }
         
         @keyframes fall {
@@ -196,6 +205,40 @@
         @keyframes sway {
             0% { transform: translateX(0); }
             100% { transform: translateX(100px); }
+        }
+        
+        /* Added animation for flower showering */
+        .flower {
+            position: absolute;
+            font-size: 20px;
+            animation: fall linear, spin 3s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Scrolling text in navbar */
+        .scrolling-text-container {
+            overflow: hidden;
+            position: relative;
+            height: 30px;
+            width: 200px;
+            margin: 0 auto;
+        }
+        
+        .scrolling-text {
+            position: absolute;
+            white-space: nowrap;
+            will-change: transform;
+            animation: scroll 15s linear infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
         
         @media (max-width: 768px) {
@@ -212,6 +255,16 @@
             .countdown-number {
                 font-size: 1.5rem;
             }
+            
+            .grid-cols-1.md\:grid-cols-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            @media (min-width: 768px) {
+                .grid-cols-1.md\:grid-cols-4 {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+            }
         }
     </style>
 </head>
@@ -222,8 +275,8 @@
     <!-- Splash Screen -->
     <div id="splash" class="fixed inset-0 flex items-center justify-center z-50">
         <div class="text-center p-6 bg-white bg-opacity-80 rounded-xl max-w-md">
-            <p id="typing-text" class="text-3xl mb-4 text-gray-700 script-font"></p>
-            <div id="main-content" class="opacity-0">
+            <p id="typing-text" class="text-3xl mb-4 text-gray-700 script-font">Join us as we say 'I do' in the mountains</p>
+            <div id="main-content">
                 <h1 class="text-6xl mb-4 script-font hero-text">Your & Name</h1>
                 <p class="text-2xl text-gray-700 script-font">Our Uttarakhand Wedding</p>
             </div>
@@ -234,7 +287,9 @@
     <nav class="navbar shadow-md fixed w-full top-0 z-40">
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
             <p class="navbar-text text-3xl script-font opacity-0 transition-opacity duration-300 text-white" id="leftName">Your</p>
-            <a href="#" class="navbar-brand text-2xl text-white" id="animatedText"></a>
+            <div class="scrolling-text-container">
+                <div class="scrolling-text text-white text-xl script-font">Mountain Wedding in Uttarakhand</div>
+            </div>
             <p class="navbar-text text-3xl script-font opacity-0 transition-opacity duration-300 text-white" id="rightName">Name</p>
         </div>
     </nav>
@@ -331,7 +386,7 @@
         <!-- Events Section -->
         <section id="events" class="mb-16">
             <h2 class="text-5xl script-font mb-8 text-center">Events</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Mehndi Event -->
                 <div class="event-card event-mehndi">
                     <div class="p-6">
@@ -368,11 +423,11 @@
                     </div>
                 </div>
 
-                <!-- Wedding Event -->
+                <!-- Baande Ceremony -->
                 <div class="event-card event-wedding">
                     <div class="p-6">
                         <h3 class="text-3xl script-font mb-4">Baande Ceremony</h3>
-                        <blockquote class="italic text-lg mb-6">"Today, we join our hearts and souls in the sacred bond of marriage, surrounded by the majestic mountains."</blockquote>
+                        <blockquote class="italic text-lg mb-6">"A traditional Uttarakhand ritual that binds our hearts together in love and devotion."</blockquote>
                         <p class="mb-2"><strong>Date:</strong> 27th April, 2025</p>
                         <p class="mb-2"><strong>Venue:</strong> Nimbuchar, Kotdwar, Uttarakhand</p>
                         <p class="mb-2"><strong>Time:</strong> 6:00 PM</p>
@@ -389,6 +444,32 @@
                                 onclick="openLiveStream()">
                                 <i class="fas fa-video mr-2"></i>
                                 Live Stream
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Wedding Ceremony -->
+                <div class="event-card event-main-wedding">
+                    <div class="p-6">
+                        <h3 class="text-3xl script-font mb-4">Main Wedding</h3>
+                        <blockquote class="italic text-lg mb-6">"Today, we join our hearts and souls in the sacred bond of marriage, surrounded by the majestic mountains."</blockquote>
+                        <p class="mb-2"><strong>Date:</strong> 29th April, 2025</p>
+                        <p class="mb-2"><strong>Venue:</strong> Nimbuchar, Kotdwar, Uttarakhand</p>
+                        <p class="mb-2"><strong>Time:</strong> 11:00 AM</p>
+                        <p class="mb-4"><strong>Dress Code:</strong> Formal Traditional</p>
+                        <div class="flex flex-col space-y-2">
+                            <button
+                                class="photo-btn w-full py-2 rounded-full transition duration-300 flex items-center justify-center"
+                                onclick="addToCalendar('Wedding Ceremony - Your Names', '29 Apr 2025', '11:00', 'Nimbuchar, Kotdwar')">
+                                <i class="fas fa-calendar-plus mr-2"></i>
+                                Add to Calendar
+                            </button>
+                            <button
+                                class="bg-blue-500 text-white w-full py-2 rounded-full hover:bg-blue-600 transition duration-300 flex items-center justify-center"
+                                onclick="startFlowerShower()">
+                                <i class="fas fa-flower mr-2"></i>
+                                Shower Flowers
                             </button>
                         </div>
                     </div>
@@ -460,21 +541,43 @@
     </footer>
 
     <script>
-        // Splash screen
-        setTimeout(() => {
-            document.getElementById('splash').style.opacity = 0;
-            setTimeout(() => {
-                document.getElementById('splash').style.display = 'none';
-                // Show the navbar
-                const navbar = document.querySelector('.navbar');
-                navbar.style.opacity = 1;
-                navbar.style.pointerEvents = 'auto';
-            }, 1000);
-        }, 5000);
+        // Direct script execution for splash screen removal
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM Content Loaded");
+            
+            // Force immediate display of navbar
+            const navbar = document.querySelector('.navbar');
+            navbar.style.opacity = 1;
+            navbar.style.pointerEvents = 'auto';
+            
+            // Create a button to manually dismiss splash if automatic fails
+            const dismissButton = document.createElement('button');
+            dismissButton.innerText = 'Continue to Website';
+            dismissButton.className = 'mt-4 bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 transition duration-300';
+            dismissButton.onclick = function() {
+                hideSplash();
+            };
+            document.querySelector('#splash .text-center').appendChild(dismissButton);
+            
+            // Automatic timeout (shorter)
+            setTimeout(hideSplash, 1500);
+        });
+        
+        // Function to hide splash screen
+        function hideSplash() {
+            console.log("Hiding splash screen");
+            const splash = document.getElementById('splash');
+            if (splash) {
+                splash.style.opacity = '0';
+                setTimeout(function() {
+                    splash.style.display = 'none';
+                }, 1000);
+            }
+        }
 
-        // Initialize everything when the page loads
+        // Initialize everything when the page loads - simplified to ensure reliability
         window.onload = function() {
-            startAnimations();
+            // No animation start - already showed content
             initializeLeaves();
             animateCards();
             setupCountdown();
@@ -534,8 +637,8 @@
 
         // Countdown timer to wedding day
         function setupCountdown() {
-            // Set the wedding date - April 27, 2025
-            const weddingDate = new Date("April 27, 2025 10:00:00").getTime();
+            // Set the wedding date - April 29, 2025 (updated to main wedding date)
+            const weddingDate = new Date("April 29, 2025 11:00:00").getTime();
             
             // Update the countdown every second
             const countdownTimer = setInterval(function() {
@@ -582,6 +685,29 @@
                     }
                 }
             }, 1000);
+        }
+
+        // Flower showering animation
+        function startFlowerShower() {
+            const flowers = ['🌸', '🌺', '🌹', '🌷', '💐', '🌼', '🌻'];
+            const flowerContainer = document.getElementById('leaves-container');
+            const maxFlowers = 50;
+            
+            for (let i = 0; i < maxFlowers; i++) {
+                setTimeout(() => {
+                    const flower = document.createElement('div');
+                    flower.classList.add('flower');
+                    flower.style.left = `${Math.random() * 100}vw`;
+                    flower.style.animationDuration = `${Math.random() * 3 + 3}s`;
+                    flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+                    flowerContainer.appendChild(flower);
+                    
+                    // Remove the flower after animation completes
+                    setTimeout(() => {
+                        flower.remove();
+                    }, 6000);
+                }, i * 100);
+            }
         }
 
         // Create and animate falling leaves
@@ -756,6 +882,4 @@
         function openLiveStream() {
             alert("Get ready to join us virtually! The livestream link will be available closer to the wedding date.");
         }
-    </script>
-</body>
-</html>
+                //
