@@ -40,10 +40,6 @@
             transition: opacity 1s ease;
             height: 100vh;
             width: 100vw;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 9999;
         }
         
         .navbar {
@@ -541,39 +537,21 @@
     </footer>
 
     <script>
-        // Direct script execution for splash screen removal
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM Content Loaded");
-            
-            // Force immediate display of navbar
+        // Splash screen - reduced timeout and fixed transition
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Immediate display of navbar to ensure access
             const navbar = document.querySelector('.navbar');
             navbar.style.opacity = 1;
             navbar.style.pointerEvents = 'auto';
             
-            // Create a button to manually dismiss splash if automatic fails
-            const dismissButton = document.createElement('button');
-            dismissButton.innerText = 'Continue to Website';
-            dismissButton.className = 'mt-4 bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 transition duration-300';
-            dismissButton.onclick = function() {
-                hideSplash();
-            };
-            document.querySelector('#splash .text-center').appendChild(dismissButton);
-            
-            // Automatic timeout (shorter)
-            setTimeout(hideSplash, 1500);
-        });
-        
-        // Function to hide splash screen
-        function hideSplash() {
-            console.log("Hiding splash screen");
-            const splash = document.getElementById('splash');
-            if (splash) {
-                splash.style.opacity = '0';
-                setTimeout(function() {
-                    splash.style.display = 'none';
+            // Short timeout for splash screen
+            setTimeout(() => {
+                document.getElementById('splash').style.opacity = 0;
+                setTimeout(() => {
+                    document.getElementById('splash').style.display = 'none';
                 }, 1000);
-            }
-        }
+            }, 2000);
+        });
 
         // Initialize everything when the page loads - simplified to ensure reliability
         window.onload = function() {
