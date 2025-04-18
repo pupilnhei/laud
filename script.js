@@ -2,6 +2,7 @@
 window.onload = function() {
     setupCountdown();
     animateCards();
+    setupRSVPForm();
 };
 
 // Countdown timer to wedding day
@@ -54,6 +55,128 @@ function setupCountdown() {
             }
         }
     }, 1000);
+}
+
+// RSVP Form Setup
+function setupRSVPForm() {
+    // Set up RSVP button to show/hide form
+    const openRsvpBtn = document.getElementById('openRsvpBtn');
+    const rsvpFormContainer = document.getElementById('rsvpFormContainer');
+    const cancelRsvpBtn = document.getElementById('cancelRsvpBtn');
+    
+    if (openRsvpBtn && rsvpFormContainer) {
+        openRsvpBtn.addEventListener('click', function() {
+            rsvpFormContainer.classList.remove('hidden');
+            openRsvpBtn.parentElement.classList.add('hidden');
+            
+            // Scroll to form
+            rsvpFormContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    }
+    
+    if (cancelRsvpBtn) {
+        cancelRsvpBtn.addEventListener('click', function() {
+            rsvpFormContainer.classList.add('hidden');
+            openRsvpBtn.parentElement.classList.remove('hidden');
+            
+            // Scroll back to button
+            openRsvpBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    }
+    
+    const rsvpForm = document.getElementById('rsvpForm');
+    if (rsvpForm) {
+        rsvpForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission
+            
+            // Show loading indicator
+            showLoadingOverlay("Submitting your RSVP...");
+            
+            // Get form data
+            const formData = new FormData(rsvpForm);
+            const formDataObj = {};
+            formData.forEach((value, key) => {
+                // Handle multiple checkbox values
+                if (key === 'events') {
+                    if (!formDataObj[key]) {
+                        formDataObj[key] = [];
+                    }
+                    formDataObj[key].push(value);
+                } else {
+                    formDataObj[key] = value;
+                }
+            });
+            
+            // In a real implementation, you would send this data to your server
+            console.log('RSVP Data:', formDataObj);
+            
+            // For Google Sheets integration later:
+            /*
+            // Example of how to send to Google Sheets via a server proxy
+            fetch('/api/submit-rsvp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formDataObj)
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideLoadingOverlay();
+                if (data.success) {
+                    showRSVPThanks(formDataObj);
+                    rsvpForm.reset();
+                } else {
+                    showNotification("There was a problem submitting your RSVP. Please try again later.", "error");
+                }
+            })
+            .catch(error => {
+                hideLoadingOverlay();
+                showNotification("Connection error. Please check your internet connection and try again.", "error");
+            });
+            */
+            
+            // For now, just show a thank you message
+            setTimeout(() => {
+                hideLoadingOverlay();
+                showRSVPThanks(formDataObj);
+                rsvpForm.reset();
+                
+                // Hide form, show button again
+                rsvpFormContainer.classList.add('hidden');
+                openRsvpBtn.parentElement.classList.remove('hidden');
+            }, 1500);
+        });
+        
+        // Show/hide guest count based on attendance
+        const attendingRadios = document.querySelectorAll('input[name="attending"]');
+        const guestCountField = document.getElementById('guestCount').parentElement;
+        
+        attendingRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'yes') {
+                    guestCountField.style.display = 'block';
+                } else {
+                    guestCountField.style.display = 'none';
+                }
+            });
+        });
+        
+        // Initial state
+        if (document.querySelector('input[name="attending"]:checked')?.value === 'no') {
+            guestCountField.style.display = 'none';
+        }
+    }
+}
+
+// Show RSVP thank you message
+function showRSVPThanks(data) {
+    // Create a simple alert with thank you message
+    alert(`Thank you, ${data.name}! Your RSVP has been received. ${data.attending === 'yes' ? 'We look forward to celebrating with you!' : 'We will miss you at our celebration.'}`);
+    
+    // Also show a notification
+    showNotification("Your RSVP has been received. Thank you!", "success");
+}
 }
 
 // Photo sharing features
@@ -159,19 +282,19 @@ function processPhotoUpload(files) {
     }
     
     // Show loading overlay
-    showLoadingOverlay(`Uploading ${files.length} photo${files.length > 1 ? 's' : ''}...`);
+    showLoadingOverlay(`Processing ${files.length} photo${files.length > 1 ? 's' : ''}...`);
     
-    // Simulate uploading process
+    // Hide loading after a short delay
     setTimeout(() => {
         hideLoadingOverlay();
         closePhotoModal();
-        showNotification(`Thank you! Your photo${files.length > 1 ? 's have' : ' has'} been added to our wedding collection.`, 'success');
+        
+        // Tell user that photo sharing will be available soon
+        alert("Photo sharing will be available soon! Please check back closer to the wedding date.");
         
         // Clear file input for next time
         document.getElementById('fileInput').value = '';
-    }, 2000);
-    
-    // In a real implementation, you would use FormData to upload files to a server
+    }, 1500);
 }
 
 // Take photo with camera
@@ -305,16 +428,16 @@ function processCapturedPhotoUpload(imageData) {
     }
     
     // Show loading overlay
-    showLoadingOverlay("Uploading your photo...");
+    showLoadingOverlay("Processing your photo...");
     
-    // Simulate uploading process
+    // Hide loading after a short delay
     setTimeout(() => {
         hideLoadingOverlay();
         closePhotoModal();
-        showNotification("Thank you! Your wedding photo has been added to our collection.", "success");
-    }, 2000);
-    
-    // In a real implementation, you would send the imageData to your server
+        
+        // Tell user that photo sharing will be available soon
+        alert("Photo sharing will be available soon! Please check back closer to the wedding date.");
+    }, 1500);
 }
 
 // Close camera view
@@ -362,7 +485,12 @@ function openLiveStream() {
 
 // Open RSVP form
 function openRSVPForm() {
-    alert("Our RSVP form will be available soon. Please check back later!");
+    // This function is no longer needed since we have an embedded form
+    // Kept for backward compatibility
+    const rsvpSection = document.querySelector('.content-section:has(#rsvpForm)');
+    if (rsvpSection) {
+        rsvpSection.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 // Loading overlay
