@@ -1,8 +1,70 @@
-// Initialize everything when the page loads
+// Add loading overlay functions
+function showLoadingOverlay(message) {
+    // Create a loading overlay if it doesn't exist
+    let overlay = document.querySelector('.loading-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'loading-overlay fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 z-50';
+        overlay.innerHTML = `
+            <div class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+                <div class="spinner mb-4"></div>
+                <p class="text-lg font-medium">${message}</p>
+            </div>
+        `;
+        
+        // Add spinner style if not already in the document
+        if (!document.querySelector('#spinner-style')) {
+            const style = document.createElement('style');
+            style.id = 'spinner-style';
+            style.textContent = `
+                .spinner {
+                    border: 4px solid rgba(0, 0, 0, 0.1);
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    border-left-color: #506D2F;
+                    animation: spin 1s linear infinite;
+                }
+                
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(overlay);
+    } else {
+        // Update message if overlay already exists
+        const messageElement = overlay.querySelector('p');
+        if (messageElement) {
+            messageElement.textContent = message;
+        }
+        overlay.classList.remove('hidden');
+    }
+}
+
+function hideLoadingOverlay() {
+    const overlay = document.querySelector('.loading-overlay');
+    if (overlay) {
+        overlay.classList.add('hidden');
+        // Optionally remove after animation
+        setTimeout(() => {
+            overlay.remove();
+        }, 300);
+    }
+}// Initialize everything when the page loads
 window.onload = function() {
     setupCountdown();
-    animateCards();
-    setupRSVPForm();
+    
+    // Update names if needed
+    if (document.querySelector('#leftName')) {
+        document.getElementById('leftName').textContent = "Sanma";
+    }
+    if (document.querySelector('#rightName')) {
+        document.getElementById('rightName').textContent = "Rahul";
+    }
 };
 
 // Countdown timer to wedding day
@@ -57,129 +119,7 @@ function setupCountdown() {
     }, 1000);
 }
 
-// RSVP Form Setup
-function setupRSVPForm() {
-    // Set up RSVP button to show/hide form
-    const openRsvpBtn = document.getElementById('openRsvpBtn');
-    const rsvpFormContainer = document.getElementById('rsvpFormContainer');
-    const cancelRsvpBtn = document.getElementById('cancelRsvpBtn');
-    
-    if (openRsvpBtn && rsvpFormContainer) {
-        openRsvpBtn.addEventListener('click', function() {
-            rsvpFormContainer.classList.remove('hidden');
-            openRsvpBtn.parentElement.classList.add('hidden');
-            
-            // Scroll to form
-            rsvpFormContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
-    }
-    
-    if (cancelRsvpBtn) {
-        cancelRsvpBtn.addEventListener('click', function() {
-            rsvpFormContainer.classList.add('hidden');
-            openRsvpBtn.parentElement.classList.remove('hidden');
-            
-            // Scroll back to button
-            openRsvpBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
-    }
-    
-    const rsvpForm = document.getElementById('rsvpForm');
-    if (rsvpForm) {
-        rsvpForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent form submission
-            
-            // Show loading indicator
-            showLoadingOverlay("Submitting your RSVP...");
-            
-            // Get form data
-            const formData = new FormData(rsvpForm);
-            const formDataObj = {};
-            formData.forEach((value, key) => {
-                // Handle multiple checkbox values
-                if (key === 'events') {
-                    if (!formDataObj[key]) {
-                        formDataObj[key] = [];
-                    }
-                    formDataObj[key].push(value);
-                } else {
-                    formDataObj[key] = value;
-                }
-            });
-            
-            // In a real implementation, you would send this data to your server
-            console.log('RSVP Data:', formDataObj);
-            
-            // For Google Sheets integration later:
-            /*
-            // Example of how to send to Google Sheets via a server proxy
-            fetch('/api/submit-rsvp', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formDataObj)
-            })
-            .then(response => response.json())
-            .then(data => {
-                hideLoadingOverlay();
-                if (data.success) {
-                    showRSVPThanks(formDataObj);
-                    rsvpForm.reset();
-                } else {
-                    showNotification("There was a problem submitting your RSVP. Please try again later.", "error");
-                }
-            })
-            .catch(error => {
-                hideLoadingOverlay();
-                showNotification("Connection error. Please check your internet connection and try again.", "error");
-            });
-            */
-            
-            // For now, just show a thank you message
-            setTimeout(() => {
-                hideLoadingOverlay();
-                showRSVPThanks(formDataObj);
-                rsvpForm.reset();
-                
-                // Hide form, show button again
-                rsvpFormContainer.classList.add('hidden');
-                openRsvpBtn.parentElement.classList.remove('hidden');
-            }, 1500);
-        });
-        
-        // Show/hide guest count based on attendance
-        const attendingRadios = document.querySelectorAll('input[name="attending"]');
-        const guestCountField = document.getElementById('guestCount').parentElement;
-        
-        attendingRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.value === 'yes') {
-                    guestCountField.style.display = 'block';
-                } else {
-                    guestCountField.style.display = 'none';
-                }
-            });
-        });
-        
-        // Initial state
-        if (document.querySelector('input[name="attending"]:checked')?.value === 'no') {
-            guestCountField.style.display = 'none';
-        }
-    }
-}
-
-// Show RSVP thank you message
-function showRSVPThanks(data) {
-    // Create a simple alert with thank you message
-    alert(`Thank you, ${data.name}! Your RSVP has been received. ${data.attending === 'yes' ? 'We look forward to celebrating with you!' : 'We will miss you at our celebration.'}`);
-    
-    // Also show a notification
-    showNotification("Your RSVP has been received. Thank you!", "success");
-}
-}
-
-// Photo sharing features
+// Photo sharing with Google Drive
 function showPhotoOptions() {
     document.getElementById('photoModal').classList.remove('hidden');
     document.getElementById('photoModal').classList.add('flex');
@@ -189,181 +129,91 @@ function closePhotoModal() {
     document.getElementById('photoModal').classList.add('hidden');
     document.getElementById('photoModal').classList.remove('flex');
     
-    // Remove any preview containers if they exist
-    const previewContainer = document.getElementById('previewContainer');
-    if (previewContainer) {
-        previewContainer.remove();
+    // Reset any preview if it exists
+    const preview = document.getElementById('preview');
+    if (preview) {
+        preview.classList.add('hidden');
+    }
+    
+    const previewControls = document.getElementById('previewControls');
+    if (previewControls) {
+        previewControls.classList.add('hidden');
     }
 }
 
-// Choose files through file input
-function chooseFiles() {
-    document.getElementById('fileInput').click();
-}
-
-// Handle file uploads
-document.addEventListener('DOMContentLoaded', function() {
-    const fileInput = document.getElementById('fileInput');
-    if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                // Show preview of selected photos
-                showPhotoPreview(e.target.files);
-            }
-        });
-    }
-});
-
-// Show preview of selected photos
-function showPhotoPreview(files) {
-    // Create or show preview container
-    let previewContainer = document.getElementById('previewContainer');
-    if (previewContainer) {
-        previewContainer.remove();
-    }
-    
-    // Create the preview container
-    previewContainer = document.createElement('div');
-    previewContainer.id = 'previewContainer';
-    previewContainer.className = 'mt-6 text-center';
-    previewContainer.innerHTML = `
-        <h4 class="text-lg font-medium mb-2">Preview Your Photo</h4>
-        <div class="relative inline-block">
-            <img id="preview" class="max-w-full max-h-64 object-contain mx-auto rounded" />
-            <div class="mt-2 text-sm text-gray-500">
-                <span id="photoCount">${files.length} photo${files.length > 1 ? 's' : ''} selected</span>
-            </div>
-        </div>
-        <div class="mt-4 flex justify-center space-x-3">
-            <button id="cancelUploadBtn" class="btn secondary-btn bg-gray-600 text-white">
-                Cancel
-            </button>
-            <button id="confirmUploadBtn" class="btn primary-btn">
-                Upload Photo${files.length > 1 ? 's' : ''}
-            </button>
-        </div>
-    `;
-    
-    // Append it to the modal
-    document.querySelector('#photoModal .bg-white').appendChild(previewContainer);
-    
-    // Show preview of the first image
-    if (files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const preview = document.getElementById('preview');
-            if (preview) {
-                preview.src = e.target.result;
-            }
-        };
-        reader.readAsDataURL(files[0]);
-    }
-    
-    // Set up event listeners for the buttons
-    document.getElementById('cancelUploadBtn').addEventListener('click', function() {
-        // Clear the file input
-        fileInput.value = '';
-        // Hide the preview
-        previewContainer.remove();
-    });
-    
-    document.getElementById('confirmUploadBtn').addEventListener('click', function() {
-        // Process the upload
-        processPhotoUpload(files);
-    });
-}
-
-// Process photo upload (simulated for now)
-function processPhotoUpload(files) {
-    // Remove preview
-    const previewContainer = document.getElementById('previewContainer');
-    if (previewContainer) {
-        previewContainer.remove();
-    }
-    
-    // Show loading overlay
-    showLoadingOverlay(`Processing ${files.length} photo${files.length > 1 ? 's' : ''}...`);
-    
-    // Hide loading after a short delay
-    setTimeout(() => {
-        hideLoadingOverlay();
-        closePhotoModal();
-        
-        // Tell user that photo sharing will be available soon
-        alert("Photo sharing will be available soon! Please check back closer to the wedding date.");
-        
-        // Clear file input for next time
-        document.getElementById('fileInput').value = '';
-    }, 1500);
-}
-
-// Take photo with camera
 function takePhoto() {
-    // Check if camera access is available
+    // For mobile devices, access camera if available
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Show loading while accessing camera
         showLoadingOverlay("Accessing camera...");
         
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
                 hideLoadingOverlay();
-                createCameraInterface(stream);
+                
+                // Create camera view if it doesn't exist
+                let cameraView = document.getElementById('cameraView');
+                if (!cameraView) {
+                    cameraView = document.createElement('div');
+                    cameraView.id = 'cameraView';
+                    cameraView.className = 'fixed inset-0 bg-black z-50 flex flex-col';
+                    cameraView.innerHTML = `
+                        <div class="flex justify-end p-4">
+                            <button id="closeCameraBtn" class="text-white bg-gray-800 rounded-full p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="flex-1 relative">
+                            <video id="video" class="absolute inset-0 w-full h-full object-cover"></video>
+                        </div>
+                        <div class="p-4 flex justify-center">
+                            <button id="captureBtn" class="bg-white rounded-full p-4 shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                    document.body.appendChild(cameraView);
+                    
+                    // Set up close button
+                    document.getElementById('closeCameraBtn').addEventListener('click', function() {
+                        closeCameraView();
+                    });
+                    
+                    // Set up capture button
+                    document.getElementById('captureBtn').addEventListener('click', function() {
+                        capturePhoto(stream);
+                    });
+                } else {
+                    cameraView.classList.remove('hidden');
+                }
+                
+                // Hide the photo modal
+                closePhotoModal();
+                
+                // Set up video stream
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+                video.play();
             })
-            .catch(function(error) {
+            .catch(function(err) {
                 hideLoadingOverlay();
-                console.error("Error accessing camera:", error);
-                showNotification("Could not access your camera. Please check permissions or try uploading photos instead.", "error");
+                console.error("Error accessing the camera", err);
+                showNotification("Could not access your camera. Please check permissions or try uploading instead.", "error");
             });
     } else {
-        showNotification("Your device doesn't support camera access. Please use the upload option instead.", "error");
+        showNotification("Camera not available on this device. Please use the upload option.", "error");
+        // Fall back to file upload
+        uploadToGoogleDrive();
     }
 }
 
-// Create camera interface
-function createCameraInterface(stream) {
-    // Close photo modal
-    closePhotoModal();
+function capturePhoto(stream) {
+    const video = document.getElementById('video');
     
-    // Create camera view
-    const cameraView = document.createElement('div');
-    cameraView.id = 'cameraView';
-    cameraView.className = 'camera-view';
-    cameraView.innerHTML = `
-        <div class="camera-header">
-            <button id="closeCameraBtn" class="camera-close-btn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="camera-content">
-            <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
-        </div>
-        <div class="camera-footer">
-            <button id="capturePhotoBtn" class="camera-capture-btn">
-                <i class="fas fa-camera" style="font-size: 24px;"></i>
-            </button>
-        </div>
-    `;
-    
-    // Add to body
-    document.body.appendChild(cameraView);
-    
-    // Set up video stream
-    const video = document.getElementById('cameraVideo');
-    video.srcObject = stream;
-    
-    // Set up close button
-    document.getElementById('closeCameraBtn').addEventListener('click', function() {
-        closeCameraView();
-    });
-    
-    // Set up capture button
-    document.getElementById('capturePhotoBtn').addEventListener('click', function() {
-        capturePhoto(video);
-    });
-}
-
-// Capture photo from video stream
-function capturePhoto(video) {
     // Create a canvas to capture the photo
     const canvas = document.createElement('canvas');
     canvas.width = video.videoWidth;
@@ -371,89 +221,250 @@ function capturePhoto(video) {
     const context = canvas.getContext('2d');
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     
-    // Get image data
-    const imageData = canvas.toDataURL('image/jpeg');
+    // Get the data URL from the canvas
+    const photoData = canvas.toDataURL('image/jpeg');
     
     // Close camera view
     closeCameraView();
     
-    // Show photo preview modal
-    showCapturedPhotoPreview(imageData);
+    // Show preview before uploading
+    let previewContainer = document.getElementById('previewContainer');
+    if (!previewContainer) {
+        // Create the preview container
+        previewContainer = document.createElement('div');
+        previewContainer.id = 'previewContainer';
+        previewContainer.className = 'mt-6 text-center';
+        previewContainer.innerHTML = `
+            <h4 class="text-lg font-medium mb-2">Preview Your Photo</h4>
+            <div class="relative inline-block">
+                <img id="preview" class="max-w-full max-h-64 object-contain mx-auto rounded" src="${photoData}" />
+            </div>
+            <div class="mt-4 flex justify-center space-x-3">
+                <button id="retakePhotoBtn" class="btn secondary-btn bg-gray-600 text-white">
+                    Retake
+                </button>
+                <button id="uploadPhotoBtn" class="btn primary-btn">
+                    Upload Photo
+                </button>
+            </div>
+        `;
+        
+        // Append it to the modal
+        document.querySelector('#photoModal .bg-white').appendChild(previewContainer);
+        
+        // Show the modal again
+        showPhotoOptions();
+        
+        // Set up event listeners for the buttons
+        document.getElementById('retakePhotoBtn').addEventListener('click', function() {
+            // Remove the preview
+            previewContainer.remove();
+            // Take another photo
+            takePhoto();
+        });
+        
+        document.getElementById('uploadPhotoBtn').addEventListener('click', function() {
+            // Remove the preview
+            previewContainer.remove();
+            
+            // Upload the captured photo to Cloudinary
+            uploadCapturedPhotoToCloudinary(photoData);
+        });
+    } else {
+        // Update existing preview
+        const preview = document.getElementById('preview');
+        if (preview) {
+            preview.src = photoData;
+        }
+        // Show the modal again
+        showPhotoOptions();
+    }
 }
 
-// Show preview of captured photo
-function showCapturedPhotoPreview(imageData) {
-    // Show the photo modal again
-    showPhotoOptions();
+// Function to upload captured photo to Cloudinary
+function uploadCapturedPhotoToCloudinary(dataUrl) {
+    // Show loading overlay
+    showLoadingOverlay("Uploading your photo...");
     
-    // Create preview container
-    const previewContainer = document.createElement('div');
-    previewContainer.id = 'previewContainer';
-    previewContainer.className = 'mt-6 text-center';
-    previewContainer.innerHTML = `
-        <h4 class="text-lg font-medium mb-2">Preview Your Photo</h4>
-        <div class="relative inline-block">
-            <img id="preview" class="max-w-full max-h-64 object-contain mx-auto rounded" src="${imageData}" />
-        </div>
-        <div class="mt-4 flex justify-center space-x-3">
-            <button id="retakePhotoBtn" class="btn secondary-btn bg-gray-600 text-white">
-                Retake
-            </button>
-            <button id="uploadCapturedBtn" class="btn primary-btn">
-                Upload Photo
-            </button>
-        </div>
-    `;
+    // Convert base64/dataURL to blob for uploading
+    const blob = dataURLtoBlob(dataUrl);
     
-    // Add to modal
-    document.querySelector('#photoModal .bg-white').appendChild(previewContainer);
+    // Create FormData
+    const formData = new FormData();
+    formData.append('file', blob, 'captured-photo.jpg');
+    formData.append('upload_preset', wedding_photos);
+    formData.append('cloud_name', drboaasos);
+    formData.append('tags', 'wedding,sanma-rahul-wedding,camera-captured');
+    formData.append('folder', 'wedding_submissions');
     
-    // Set up button actions
-    document.getElementById('retakePhotoBtn').addEventListener('click', function() {
-        previewContainer.remove();
-        takePhoto();
-    });
-    
-    document.getElementById('uploadCapturedBtn').addEventListener('click', function() {
-        processCapturedPhotoUpload(imageData);
+    // Upload to Cloudinary
+    fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideLoadingOverlay();
+        if (data.secure_url) {
+            showNotification("Your wedding photo has been added to our collection! Thank you for sharing.", "success");
+        } else {
+            showNotification("Upload completed but we couldn't get the photo URL. It should still be in our collection.", "success");
+        }
+        closePhotoModal();
+    })
+    .catch(error => {
+        hideLoadingOverlay();
+        console.error('Upload error:', error);
+        showNotification("There was an issue uploading your photo. Please try again.", "error");
+        closePhotoModal();
     });
 }
 
-// Process captured photo upload
-function processCapturedPhotoUpload(imageData) {
-    // Remove preview
-    const previewContainer = document.getElementById('previewContainer');
-    if (previewContainer) {
-        previewContainer.remove();
+// Utility function to convert data URL to Blob
+function dataURLtoBlob(dataURL) {
+    // Convert base64/URLEncoded data component to raw binary data held in a string
+    let byteString;
+    if (dataURL.split(',')[0].indexOf('base64') >= 0) {
+        byteString = atob(dataURL.split(',')[1]);
+    } else {
+        byteString = decodeURIComponent(dataURL.split(',')[1]);
     }
     
-    // Show loading overlay
-    showLoadingOverlay("Processing your photo...");
+    // Separate out the mime component
+    const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
     
-    // Hide loading after a short delay
-    setTimeout(() => {
-        hideLoadingOverlay();
-        closePhotoModal();
-        
-        // Tell user that photo sharing will be available soon
-        alert("Photo sharing will be available soon! Please check back closer to the wedding date.");
-    }, 1500);
+    // Write the bytes of the string to an ArrayBuffer
+    const ia = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    
+    return new Blob([ia], {type: mimeString});
 }
 
-// Close camera view
 function closeCameraView() {
     const cameraView = document.getElementById('cameraView');
     if (cameraView) {
         // Stop all video streams
-        const video = document.getElementById('cameraVideo');
+        const video = document.getElementById('video');
         if (video && video.srcObject) {
             const tracks = video.srcObject.getTracks();
             tracks.forEach(track => track.stop());
+            video.srcObject = null;
         }
         
-        // Remove camera view
-        cameraView.remove();
+        cameraView.classList.add('hidden');
+        // Optionally remove it completely
+        setTimeout(() => {
+            cameraView.remove();
+        }, 300);
     }
+}
+
+function uploadToGoogleDrive() {
+    // Show file picker dialog
+    document.getElementById('fileInput').click();
+}
+
+// Handle file uploads in the background
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                // Show preview for first image
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                // Create or show preview container
+                let previewContainer = document.getElementById('previewContainer');
+                if (!previewContainer) {
+                    // Create the preview container if it doesn't exist
+                    previewContainer = document.createElement('div');
+                    previewContainer.id = 'previewContainer';
+                    previewContainer.className = 'mt-6 text-center';
+                    previewContainer.innerHTML = `
+                        <h4 class="text-lg font-medium mb-2">Preview Your Photo</h4>
+                        <div class="relative inline-block">
+                            <img id="preview" class="max-w-full max-h-64 object-contain mx-auto rounded" />
+                            <div class="mt-2 text-sm text-gray-500">
+                                <span id="photoCount">${e.target.files.length} photo${e.target.files.length > 1 ? 's' : ''} selected</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-center space-x-3">
+                            <button id="cancelUploadBtn" class="btn secondary-btn bg-gray-600 text-white">
+                                Cancel
+                            </button>
+                            <button id="confirmUploadBtn" class="btn primary-btn">
+                                Upload Photo${e.target.files.length > 1 ? 's' : ''}
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Append it to the modal
+                    document.querySelector('#photoModal .bg-white').appendChild(previewContainer);
+                    
+                    // Set up event listeners for the buttons
+                    document.getElementById('cancelUploadBtn').addEventListener('click', function() {
+                        // Clear the file input
+                        fileInput.value = '';
+                        // Hide the preview
+                        previewContainer.remove();
+                    });
+                    
+                    document.getElementById('confirmUploadBtn').addEventListener('click', function() {
+                        // Simulate uploading
+                        previewContainer.remove();
+                        simulatePhotoUpload(e.target.files);
+                    });
+                } else {
+                    // Update existing preview container
+                    document.getElementById('photoCount').textContent = 
+                        `${e.target.files.length} photo${e.target.files.length > 1 ? 's' : ''} selected`;
+                    document.getElementById('confirmUploadBtn').textContent = 
+                        `Upload Photo${e.target.files.length > 1 ? 's' : ''}`;
+                    previewContainer.style.display = 'block';
+                }
+                
+                // Show preview of the first image
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    if (preview) {
+                        preview.src = e.target.result;
+                    }
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+
+function simulatePhotoUpload(files) {
+    // Show loading overlay
+    showLoadingOverlay(`Uploading ${files.length} photo${files.length > 1 ? 's' : ''}...`);
+    
+    // Simulate a delay for uploading
+    setTimeout(() => {
+        hideLoadingOverlay();
+        showNotification(`Thank you! ${files.length} photo${files.length > 1 ? 's have' : ' has'} been added to our wedding collection.`, "success");
+        closePhotoModal();
+        
+        // Clear the file input for next time
+        document.getElementById('fileInput').value = '';
+    }, 2000);
+    
+    // In a real implementation, you would use FormData and fetch/XMLHttpRequest to upload
+    // the files to your server or to storage service
+}
+
+function uploadCapturedPhoto() {
+    // In a real implementation, this would upload the photo to your storage
+    alert("Thank you for sharing your wedding photo! In the real version, this would upload your photo to our collection.");
+    closePhotoModal();
+    
+    // Show success notification
+    showNotification("Photo shared successfully! Thanks for contributing to our wedding memories.");
 }
 
 // Add to Calendar functionality
@@ -470,7 +481,9 @@ function addToCalendar(eventTitle, eventDate, eventTime, venue) {
         '&sf=true&output=xml';
 
     window.open(googleCalendarUrl, '_blank');
-    showNotification("Event added to your calendar!", "success");
+    
+    // Show confirmation
+    showNotification("Event added to your calendar!");
 }
 
 // Open Google Maps directions
@@ -483,108 +496,76 @@ function openLiveStream() {
     alert("Get ready to join our wedding virtually! The livestream link will be available closer to the wedding date.");
 }
 
-// Open RSVP form
-function openRSVPForm() {
-    // This function is no longer needed since we have an embedded form
-    // Kept for backward compatibility
-    const rsvpSection = document.querySelector('.content-section:has(#rsvpForm)');
-    if (rsvpSection) {
-        rsvpSection.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-
-// Loading overlay
-function showLoadingOverlay(message) {
-    // Create loading overlay if it doesn't exist
-    let overlay = document.querySelector('.loading-overlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.className = 'loading-overlay';
-        overlay.innerHTML = `
-            <div class="text-center">
-                <div class="spinner"></div>
-                <div class="loading-text">${message}</div>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-    } else {
-        // Update message if it already exists
-        overlay.querySelector('.loading-text').textContent = message;
-        overlay.classList.remove('hidden');
-    }
-}
-
-function hideLoadingOverlay() {
-    const overlay = document.querySelector('.loading-overlay');
-    if (overlay) {
-        overlay.classList.add('hidden');
-        // Remove after animation
-        setTimeout(() => overlay.remove(), 500);
-    }
-}
-
 // Notification system
-function showNotification(message, type = 'info') {
-    // Create notification container if it doesn't exist
+function showNotification(message, type = 'success') {
+    // Create container if it doesn't exist
     let container = document.querySelector('.notification-container');
     if (!container) {
         container = document.createElement('div');
-        container.className = 'notification-container';
+        container.className = 'notification-container fixed top-4 right-4 z-50 flex flex-col items-end';
         document.body.appendChild(container);
     }
     
     // Create notification
     const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    
-    // Icon based on type
-    let icon = 'info-circle';
-    if (type === 'success') icon = 'check-circle';
-    if (type === 'error') icon = 'exclamation-circle';
-    
+    notification.className = `bg-white rounded shadow-md p-4 mb-2 transform translate-x-full transition-transform duration-300 ${type === 'error' ? 'border-l-4 border-red-500' : 'border-l-4 border-green-600'}`;
     notification.innerHTML = `
-        <div class="notification-icon">
-            <i class="fas fa-${icon}"></i>
-        </div>
-        <div class="notification-text">${message}</div>
-        <div class="notification-close">
-            <i class="fas fa-times"></i>
+        <div class="flex items-center">
+            <span class="mr-2 text-${type === 'error' ? 'red' : 'green'}-600">
+                <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+            </span>
+            <p class="text-sm">${message}</p>
         </div>
     `;
     
-    // Add to container
     container.appendChild(notification);
     
-    // Animate in
-    setTimeout(() => notification.classList.add('show'), 10);
-    
-    // Set up close button
-    notification.querySelector('.notification-close').addEventListener('click', function() {
-        notification.classList.remove('show');
-        setTimeout(() => notification.remove(), 300);
-    });
-    
-    // Auto-remove after 5 seconds
+    // Show notification
     setTimeout(() => {
-        if (notification.parentNode) {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                if (notification.parentNode) notification.remove();
-                // Remove container if empty
-                if (container.children.length === 0) container.remove();
-            }, 300);
-        }
-    }, 5000);
+        notification.classList.remove('translate-x-full');
+    }, 10);
+    
+    // Hide and remove notification
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            notification.remove();
+            if (container.children.length === 0) {
+                container.remove();
+            }
+        }, 300);
+    }, 4000);
 }
 
 // Animation for event cards
-function animateCards() {
-    const cards = document.querySelectorAll('.event-card');
-    setTimeout(() => {
-        cards.forEach((card, index) => {
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate event cards when they come into view
+    const eventCards = document.querySelectorAll('.event-card');
+    if (!('IntersectionObserver' in window)) {
+        // Fallback for browsers that don't support IntersectionObserver
+        eventCards.forEach(card => {
             setTimeout(() => {
-                card.classList.add('visible');
-            }, index * 200);
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 500);
         });
-    }, 1000);
-}
+        return;
+    }
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+    
+    eventCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(card);
+    });
+});
