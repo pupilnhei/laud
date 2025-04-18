@@ -267,17 +267,8 @@ function capturePhoto(stream) {
             // Remove the preview
             previewContainer.remove();
             
-            // Show loading overlay
-            showLoadingOverlay("Uploading your photo...");
-            
-            // Simulate uploading the photo
-            setTimeout(() => {
-                hideLoadingOverlay();
-                showNotification("Thank you! Your wedding photo has been added to our collection.", "success");
-                closePhotoModal();
-            }, 1500);
-            
-            // In a real implementation, you would send the photoData to your server/storage
+            // Upload the captured photo to Cloudinary
+            uploadCapturedPhotoToCloudinary(photoData);
         });
     } else {
         // Update existing preview
@@ -288,6 +279,67 @@ function capturePhoto(stream) {
         // Show the modal again
         showPhotoOptions();
     }
+}
+
+// Function to upload captured photo to Cloudinary
+function uploadCapturedPhotoToCloudinary(dataUrl) {
+    // Show loading overlay
+    showLoadingOverlay("Uploading your photo...");
+    
+    // Convert base64/dataURL to blob for uploading
+    const blob = dataURLtoBlob(dataUrl);
+    
+    // Create FormData
+    const formData = new FormData();
+    formData.append('file', blob, 'captured-photo.jpg');
+    formData.append('upload_preset', wedding_photos);
+    formData.append('cloud_name', drboaasos);
+    formData.append('tags', 'wedding,sanma-rahul-wedding,camera-captured');
+    formData.append('folder', 'wedding_submissions');
+    
+    // Upload to Cloudinary
+    fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideLoadingOverlay();
+        if (data.secure_url) {
+            showNotification("Your wedding photo has been added to our collection! Thank you for sharing.", "success");
+        } else {
+            showNotification("Upload completed but we couldn't get the photo URL. It should still be in our collection.", "success");
+        }
+        closePhotoModal();
+    })
+    .catch(error => {
+        hideLoadingOverlay();
+        console.error('Upload error:', error);
+        showNotification("There was an issue uploading your photo. Please try again.", "error");
+        closePhotoModal();
+    });
+}
+
+// Utility function to convert data URL to Blob
+function dataURLtoBlob(dataURL) {
+    // Convert base64/URLEncoded data component to raw binary data held in a string
+    let byteString;
+    if (dataURL.split(',')[0].indexOf('base64') >= 0) {
+        byteString = atob(dataURL.split(',')[1]);
+    } else {
+        byteString = decodeURIComponent(dataURL.split(',')[1]);
+    }
+    
+    // Separate out the mime component
+    const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+    
+    // Write the bytes of the string to an ArrayBuffer
+    const ia = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    
+    return new Blob([ia], {type: mimeString});
 }
 
 function closeCameraView() {
