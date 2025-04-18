@@ -6,202 +6,7 @@
     <title>Mountain Wedding Invitation</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
-        
-        :root {
-            --primary-color: #506D2F;
-            --secondary-color: #8B5A2B;
-            --accent-color: #D4A373;
-            --light-accent: #E9EDC9;
-            --background-color: #F9F5EB;
-            --text-color: #433520;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-        
-        .script-font {
-            font-family: 'Dancing Script', cursive;
-        }
-        
-        .header-bar {
-            background-color: var(--primary-color);
-            height: 12px;
-            width: 100%;
-        }
-        
-        .main-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
-        
-        .hero-image {
-            width: 100%;
-            border-radius: 12px;
-            margin: 20px 0;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .hero-image img {
-            width: 100%;
-            display: block;
-        }
-        
-        .couple-names {
-            text-align: center;
-            margin: 24px 0;
-        }
-        
-        .countdown-container {
-            display: flex;
-            justify-content: center;
-            margin: 32px 0;
-            gap: 16px;
-        }
-        
-        .countdown-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: var(--light-accent);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .countdown-number {
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: var(--primary-color);
-        }
-        
-        .countdown-label {
-            font-size: 0.7rem;
-            color: var(--text-color);
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            margin: 36px 0 20px;
-            text-align: center;
-            color: var(--secondary-color);
-        }
-        
-        .content-section {
-            margin-bottom: 40px;
-        }
-        
-        .event-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
-        .event-card {
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 16px;
-        }
-        
-        .event-mehndi {
-            background-color: #E6D7B9;
-        }
-        
-        .event-haldi {
-            background-color: #F2D091;
-        }
-        
-        .event-wedding {
-            background-color: #DCEDC2;
-        }
-        
-        .btn {
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .primary-btn {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .primary-btn:hover {
-            background-color: var(--secondary-color);
-        }
-        
-        .secondary-btn {
-            background-color: var(--light-accent);
-            color: var(--text-color);
-        }
-        
-        .secondary-btn:hover {
-            background-color: var(--accent-color);
-        }
-        
-        .story-section {
-            text-align: justify;
-            padding: 16px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .venue-image {
-            width: 100%;
-            border-radius: 12px;
-            margin: 20px 0;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .venue-image img {
-            width: 100%;
-            display: block;
-        }
-        
-        .venue-details {
-            text-align: center;
-            margin: 16px 0;
-        }
-        
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            margin-top: 40px;
-        }
-        
-        /* Mobile first design - no need for many media queries */
-        @media (min-width: 640px) {
-            .event-cards {
-                flex-direction: row;
-            }
-            
-            .event-card {
-                flex: 1;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -217,7 +22,11 @@
         <!-- Couple Names -->
         <div class="couple-names">
             <h1 class="text-4xl script-font mb-2">Sanma & Rahul</h1>
-            <p class="text-sm">are tying the knot in the mountains of Uttarakhand!</p>
+            <div class="wedding-badge">Wedding Invitation</div>
+            <p class="text-lg font-medium mt-2">in the mountains of Uttarakhand!</p>
+            <p class="text-sm mt-3">
+                <i class="fas fa-calendar-alt mr-2"></i>April 26-27, 2025
+            </p>
         </div>
         
         <!-- Countdown -->
@@ -251,9 +60,9 @@
         
         <!-- Traditional Celebrations -->
         <div class="content-section">
-            <h2 class="section-title script-font">Traditional Celebrations</h2>
+            <h2 class="section-title script-font">Wedding Celebrations</h2>
             <p>
-                We're blending modern love with age-old traditions in our three-day celebration. From the vibrant Mehndi 
+                We're blending modern love with age-old wedding traditions in our three-day celebration. From the vibrant Mehndi 
                 to the sacred Baande ceremony, each ritual honors our heritage while creating new memories in the 
                 breathtaking Uttarakhand landscape.
             </p>
@@ -261,7 +70,7 @@
         
         <!-- Events Section -->
         <div class="content-section">
-            <h2 class="section-title script-font">Events</h2>
+            <h2 class="section-title script-font">Wedding Events</h2>
             <div class="event-cards">
                 <!-- Mehndi Event -->
                 <div class="event-card event-mehndi">
@@ -273,7 +82,7 @@
                         <strong>Dress:</strong> Colorful Traditional
                     </p>
                     <button class="btn primary-btn w-full text-sm"
-                        onclick="addToCalendar('Mehndi Ceremony - Sanma Rahuls', '26 Apr 2025', '16:00', 'Nimbuchar, Kotdwar')">
+                        onclick="addToCalendar('Mehndi Ceremony - Sanma Rahuls Wedding', '26 Apr 2025', '16:00', 'Nimbuchar, Kotdwar')">
                         <i class="fas fa-calendar-plus mr-2"></i>Add to Calendar
                     </button>
                 </div>
@@ -288,14 +97,14 @@
                         <strong>Dress:</strong> Yellow & Gold
                     </p>
                     <button class="btn primary-btn w-full text-sm"
-                        onclick="addToCalendar('Haldi Ceremony - Sanma Rahuls', '27 Apr 2025', '10:00', 'Nimbuchar, Kotdwar')">
+                        onclick="addToCalendar('Haldi Ceremony - Sanma Rahuls Wedding', '27 Apr 2025', '10:00', 'Nimbuchar, Kotdwar')">
                         <i class="fas fa-calendar-plus mr-2"></i>Add to Calendar
                     </button>
                 </div>
 
                 <!-- Wedding Event -->
                 <div class="event-card event-wedding">
-                    <h3 class="text-xl script-font mb-2">Baande Ceremony</h3>
+                    <h3 class="text-xl script-font mb-2">Baande Wedding Ceremony</h3>
                     <p class="text-sm mb-3">
                         <strong>Date:</strong> 27th April, 2025<br>
                         <strong>Time:</strong> 6:00 PM<br>
@@ -304,12 +113,12 @@
                     </p>
                     <div class="flex flex-col space-y-2">
                         <button class="btn primary-btn w-full text-sm"
-                            onclick="addToCalendar('Baande Ceremony - Sanma Rahuls', '27 Apr 2025', '18:00', 'Nimbuchar, Kotdwar')">
+                            onclick="addToCalendar('Baande Wedding Ceremony - Sanma Rahuls', '27 Apr 2025', '18:00', 'Nimbuchar, Kotdwar')">
                             <i class="fas fa-calendar-plus mr-2"></i>Add to Calendar
                         </button>
                         <button class="btn secondary-btn w-full text-sm bg-blue-500 text-white"
                             onclick="openLiveStream()">
-                            <i class="fas fa-video mr-2"></i>Live Stream
+                            <i class="fas fa-video mr-2"></i>Wedding Live Stream
                         </button>
                     </div>
                 </div>
@@ -318,8 +127,12 @@
         
         <!-- Our Story Section -->
         <div class="content-section">
-            <h2 class="section-title script-font">Our Story</h2>
+            <h2 class="section-title script-font">Our Wedding Story</h2>
             <div class="story-section">
+                <div class="story-quote">
+                    "From chance encounters to marriage vows, our journey together has been filled with laughter, 
+                    adventures, and growth. We're excited to begin this new chapter as husband and wife in the mountains we both love."
+                </div>
                 <p class="mb-4">
                     Our paths crossed unexpectedly at a friend's birthday party five years ago. What started as casual 
                     conversation quickly blossomed into something more meaningful as we discovered our shared love for 
@@ -334,21 +147,21 @@
                 <p>
                     After years of dating, countless adventures, and navigating life's ups and downs together, 
                     we knew we wanted to build a life alongside each other. Now, we're returning to the mountains that 
-                    brought us together to exchange our vows and begin our journey as partners for life.
+                    brought us together to exchange our wedding vows and begin our journey as husband and wife.
                 </p>
             </div>
         </div>
         
         <!-- Venue Section -->
         <div class="content-section">
-            <h2 class="section-title script-font">Celebration Venue</h2>
+            <h2 class="section-title script-font">Wedding Venue</h2>
             <div class="venue-image">
                 <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Nimbuchar, Kotdwar">
             </div>
             <div class="venue-details">
                 <p class="font-bold mb-2">Nimbuchar, Kotdwar, Uttarakhand</p>
                 <p class="text-sm mb-4">
-                    Nestled amidst the serene mountains of Uttarakhand, Nimbuchar offers a perfect backdrop for our special day.
+                    Nestled amidst the serene mountains of Uttarakhand, Nimbuchar offers a perfect backdrop for our wedding day.
                     The lush greenery, crisp mountain air, and panoramic views create a magical setting for our celebration.
                 </p>
                 <button class="btn secondary-btn bg-blue-500 text-white" onclick="openDirections()">
@@ -356,15 +169,39 @@
                 </button>
             </div>
         </div>
+
+        <!-- RSVP Section -->
+        <div class="content-section">
+            <h2 class="section-title script-font">Join Our Wedding</h2>
+            <div class="bg-white p-4 rounded-lg shadow text-center">
+                <p class="mb-4">We would be honored to have you join us as we celebrate our wedding day!</p>
+                <p class="text-sm mb-4">Please RSVP by March 15, 2025</p>
+                <button class="btn primary-btn" onclick="alert('RSVP functionality will be available soon!')">
+                    <i class="fas fa-envelope-open-text mr-2"></i>RSVP Now
+                </button>
+            </div>
+        </div>
     </div>
     
     <footer>
         <div class="container mx-auto px-4">
-            <p class="script-font text-xl mb-2">Join us in celebrating our love</p>
-            <p class="text-sm">
-                We cordially invite you to be part of our special day as we embark on this beautiful journey together.
+            <p class="script-font text-xl mb-2">Sanma & Rahul's Wedding</p>
+            <p class="text-sm mb-3">
+                We cordially invite you to be part of our wedding day as we embark on this beautiful journey together.
                 Your presence will make our celebration complete.
             </p>
+            <div class="flex justify-center space-x-4 mb-4">
+                <a href="#" class="text-white hover:text-gray-200">
+                    <i class="fab fa-instagram text-xl"></i>
+                </a>
+                <a href="#" class="text-white hover:text-gray-200">
+                    <i class="fab fa-facebook text-xl"></i>
+                </a>
+                <a href="#" class="text-white hover:text-gray-200">
+                    <i class="fas fa-envelope text-xl"></i>
+                </a>
+            </div>
+            <p class="text-xs opacity-75">#SanmaRahulWedding</p>
         </div>
     </footer>
 
@@ -376,184 +213,27 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            <h3 class="text-2xl mb-4 text-center script-font text-gray-800">Share Your Moment</h3>
+            <h3 class="text-2xl mb-4 text-center script-font text-gray-800">Share Your Wedding Moments</h3>
+            <p class="text-sm text-center mb-4">Help us capture the magic of our special day!</p>
             <div class="flex justify-center space-x-4">
-                <button onclick="takePhoto()" class="btn primary-btn">Take Photo</button>
-                <button onclick="uploadPhotos()" class="btn primary-btn">Upload Photos</button>
+                <button onclick="takePhoto()" class="btn primary-btn flex items-center">
+                    <i class="fas fa-camera mr-2"></i>Take Photo
+                </button>
+                <button onclick="uploadToGoogleDrive()" class="btn primary-btn flex items-center">
+                    <i class="fab fa-google-drive mr-2"></i>Upload to Drive
+                </button>
             </div>
-            <div id="uploadResult" class="mt-4 text-center" style="display: none;"></div>
-            <img id="preview" class="mt-4 max-w-full max-h-64 object-contain mx-auto hidden" />
-            <div class="mt-4 flex space-x-4 justify-center hidden" id="previewControls">
-                <button onclick="retakePhoto()" class="btn secondary-btn bg-gray-600 text-white">Cancel</button>
-                <button onclick="uploadCapturedPhoto()" class="btn primary-btn">Upload</button>
+            <div class="mt-4 text-center text-sm text-gray-600">
+                Photos will be added to our wedding collection
             </div>
         </div>
     </div>
 
-    <!-- Camera View -->
-    <div id="cameraView" class="fixed inset-0 bg-black hidden z-50">
-        <button onclick="closeCameraView()" class="absolute top-4 right-4 text-white z-50">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-        <video id="video" class="w-full h-full object-cover"></video>
-        <button id="captureBtn" class="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white rounded-full p-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-        </button>
-    </div>
-
-    <!-- File upload form -->
+    <!-- File upload form (hidden) -->
     <form id="uploadForm" class="hidden">
         <input type="file" id="fileInput" multiple accept="image/*">
     </form>
 
-    <script>
-        // Countdown timer to wedding day
-        function setupCountdown() {
-            // Set the wedding date - April 27, 2025
-            const weddingDate = new Date("April 27, 2025 10:00:00").getTime();
-            
-            // Update the countdown every second
-            const countdownTimer = setInterval(function() {
-                // Get today's date and time
-                const now = new Date().getTime();
-                
-                // Find the distance between now and the wedding date
-                const distance = weddingDate - now;
-                
-                // Time calculations for days, hours, minutes and seconds
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
-                // Display the countdown if element exists
-                const countdownElement = document.getElementById("countdown");
-                if (countdownElement) {
-                    countdownElement.innerHTML = `
-                        <div class="countdown-item">
-                            <span class="countdown-number">${days}</span>
-                            <span class="countdown-label">Days</span>
-                        </div>
-                        <div class="countdown-item">
-                            <span class="countdown-number">${hours}</span>
-                            <span class="countdown-label">Hours</span>
-                        </div>
-                        <div class="countdown-item">
-                            <span class="countdown-number">${minutes}</span>
-                            <span class="countdown-label">Mins</span>
-                        </div>
-                        <div class="countdown-item">
-                            <span class="countdown-number">${seconds}</span>
-                            <span class="countdown-label">Secs</span>
-                        </div>
-                    `;
-                }
-                
-                // If the countdown is over
-                if (distance < 0) {
-                    clearInterval(countdownTimer);
-                    if (countdownElement) {
-                        countdownElement.innerHTML = "<div class='text-xl script-font'>Our Wedding Day Has Arrived!</div>";
-                    }
-                }
-            }, 1000);
-        }
-
-        // Photo sharing features
-        function showPhotoOptions() {
-            document.getElementById('photoModal').classList.remove('hidden');
-            document.getElementById('photoModal').classList.add('flex');
-        }
-
-        function closePhotoModal() {
-            document.getElementById('photoModal').classList.add('hidden');
-            document.getElementById('photoModal').classList.remove('flex');
-            document.getElementById('preview').classList.add('hidden');
-            document.getElementById('previewControls').classList.add('hidden');
-        }
-
-        function takePhoto() {
-            // In a real implementation, this would access the camera
-            alert("This is a placeholder for the camera functionality. In the final version, this will access your device camera.");
-            
-            // For demonstration purposes, we'll show a placeholder in the preview
-            document.getElementById('preview').src = "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80";
-            document.getElementById('preview').classList.remove('hidden');
-            document.getElementById('previewControls').classList.remove('hidden');
-        }
-
-        function uploadPhotos() {
-            document.getElementById('fileInput').click();
-        }
-
-        // Set up the file input change event
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                // In a real implementation, this would handle the file upload
-                // For demo purposes, just show a preview of the first file
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    document.getElementById('preview').src = e.target.result;
-                    document.getElementById('preview').classList.remove('hidden');
-                    document.getElementById('previewControls').classList.remove('hidden');
-                };
-                
-                reader.readAsDataURL(file);
-            }
-        });
-
-        function retakePhoto() {
-            document.getElementById('preview').classList.add('hidden');
-            document.getElementById('previewControls').classList.add('hidden');
-        }
-
-        function uploadCapturedPhoto() {
-            // In a real implementation, this would upload the photo to a server
-            alert("Thank you for sharing your photo! In the final version, this will upload your photo to our wedding album.");
-            closePhotoModal();
-        }
-
-        function closeCameraView() {
-            document.getElementById('cameraView').classList.add('hidden');
-        }
-
-        // Add to Calendar functionality
-        function addToCalendar(eventTitle, eventDate, eventTime, venue) {
-            const startDateTime = new Date(eventDate + ' ' + eventTime);
-            const endDateTime = new Date(startDateTime.getTime() + 3600000); // Add 1 hour for event duration
-
-            const googleCalendarUrl = 'https://www.google.com/calendar/render?action=TEMPLATE' +
-                '&text=' + encodeURIComponent(eventTitle) +
-                '&dates=' + startDateTime.toISOString().replace(/-|:|\.\d+/g, '') +
-                '/' + endDateTime.toISOString().replace(/-|:|\.\d+/g, '') +
-                '&details=' + encodeURIComponent('Wedding Event in Uttarakhand') +
-                '&location=' + encodeURIComponent(venue) +
-                '&sf=true&output=xml';
-
-            window.open(googleCalendarUrl, '_blank');
-        }
-
-        // Open Google Maps directions
-        function openDirections() {
-            window.open('https://www.google.com/maps/search/?api=1&query=Nimbuchar+Kotdwar+Uttarakhand', '_blank');
-        }
-
-        // Live stream function
-        function openLiveStream() {
-            alert("Get ready to join us virtually! The livestream link will be available closer to the wedding date.");
-        }
-
-        // Initialize everything when the page loads
-        window.onload = function() {
-            setupCountdown();
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
