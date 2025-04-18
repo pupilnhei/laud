@@ -34,7 +34,7 @@
         
         #splash {
             background: linear-gradient(rgba(80, 109, 47, 0.3), rgba(139, 90, 43, 0.3)), 
-                        url('https://images.unsplash.com/photo-1562602833-0f4ab2fc46e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') 
+                        url('/api/placeholder/1200/800') 
                         no-repeat center center;
             background-size: cover;
             transition: opacity 1s ease;
@@ -85,14 +85,12 @@
             background-color: var(--secondary-color);
         }
         
-        /* Fixed and enhanced header carousel styles */
         .header-carousel {
             position: relative;
             overflow: hidden;
-            height: 500px;
+            height: 400px;
             border-radius: 12px;
             margin-top: 20px;
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
         }
         
         .header-carousel-container {
@@ -104,19 +102,6 @@
         .header-carousel-item {
             flex: 0 0 100%;
             height: 100%;
-            position: relative;
-        }
-        
-        .header-carousel-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-        
-        /* Special handling for portrait images */
-        .portrait-image {
-            object-position: center 25%; /* Keeps focus on top portion for portrait images */
         }
         
         .location-carousel {
@@ -227,14 +212,6 @@
             .countdown-number {
                 font-size: 1.5rem;
             }
-            
-            .header-carousel {
-                height: 300px;
-            }
-            
-            .location-carousel {
-                height: 300px;
-            }
         }
     </style>
 </head>
@@ -262,20 +239,20 @@
         </div>
     </nav>
 
-    <!-- Header Carousel - FIXED -->
+    <!-- Header Carousel -->
     <header class="relative mt-20 pt-8">
         <div class="container mx-auto px-6">
             <div class="header-carousel w-full">
                 <div class="header-carousel-container">
                     <div class="header-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Mountain Wedding" class="object-cover">
+                        <img src="/images/coup1.jpg" alt="Mountain Wedding" class="object-cover h-full w-full">
                     </div>
-                    <div class="header-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1585123388867-3bfe6dd4bdbf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Uttarakhand Mountains" class="object-cover">
+                    <div class="header-carousel-item h-[500px]">
+                        <img src="/images/coup2.jpg" alt="Uttarakhand Mountains" class="object-cover h-full w-full">
                     </div>
-                    <div class="header-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1505932794642-b174048d58b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Wedding Celebration" class="object-cover">
-                    </div>
+                    <div class="header-carousel-item h-[500px">
+                        <img src="/images/coup3.jpg" alt="Wedding Celebration" class="object-cover h-full w-full">
+                    </div
                 </div>
             </div>
         </div>
@@ -447,14 +424,14 @@
             </div>
         </section>
 
-        <!-- Location Section - FIXED -->
+        <!-- Location Section -->
         <section id="location" class="mb-16">
             <h2 class="text-5xl script-font mb-6 text-center">Celebration Venue</h2>
             <div class="rounded-lg shadow-md p-6 bg-white">
                 <div class="location-carousel mb-6 rounded-lg overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Venue Image 1" class="active">
-                    <img src="https://images.unsplash.com/photo-1563911302283-d2bc129e7570?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Venue Image 2">
-                    <img src="https://images.unsplash.com/photo-1531685250784-7569952593d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Venue Image 3">
+                    <img src="/api/placeholder/800/400" alt="Venue Image 1" class="active">
+                    <img src="/api/placeholder/800/400" alt="Venue Image 2">
+                    <img src="/api/placeholder/800/400" alt="Venue Image 3">
                 </div>
                 <p class="mb-6 text-center text-lg">
                     <strong>Venue:</strong> Nimbuchar, Kotdwar, Uttarakhand
@@ -498,10 +475,9 @@
         // Initialize everything when the page loads
         window.onload = function() {
             startAnimations();
-            initializeLeaves();
+           // initializeLeaves();
             animateCards();
             setupCountdown();
-            setupImageHandling();
             
             // Update with the actual names for the wedding
             document.getElementById('leftName').textContent = "Sanma";
@@ -509,26 +485,6 @@
             document.querySelector('#main-content h1').textContent = "Sanma & Rahul";
             document.querySelector('#celebration h2').innerHTML = "<span class='block'>Sanma</span><span class='block'>&</span><span class='block'>Rahul</span>";
         };
-
-        // Setup proper image handling
-        function setupImageHandling() {
-            // Check portrait images and apply special class
-            const allImages = document.querySelectorAll('img');
-            allImages.forEach(img => {
-                img.onload = function() {
-                    if (this.naturalHeight > this.naturalWidth) {
-                        this.classList.add('portrait-image');
-                    }
-                };
-                
-                // If image is already loaded
-                if (img.complete) {
-                    if (img.naturalHeight > img.naturalWidth) {
-                        img.classList.add('portrait-image');
-                    }
-                }
-            });
-        }
 
         // Typing animation for splash screen
         function typeWriter(text, i, fnCallback) {
@@ -568,7 +524,7 @@
                 element.style.opacity = Math.min(opacity, 1);
                 if (opacity < 1) {
                     requestAnimationFrame(increaseOpacity);
-				} else if (callback) {
+                } else if (callback) {
                     callback();
                 }
             }
@@ -657,9 +613,9 @@
             }
         }
 
-        // Header carousel control - with fixes for better image handling
+        // Header carousel control
         const headerCarouselContainer = document.querySelector('.header-carousel-container');
-        const headerCarouselItems = document.querySelectorAll('.header-carousel-item');
+        const headerCarouselItems = headerCarouselContainer.querySelectorAll('.header-carousel-item');
         let headerCurrentIndex = 0;
 
         function updateHeaderCarousel() {
@@ -733,7 +689,7 @@
             alert("This is a placeholder for the camera functionality. In the final version, this will access your device camera.");
             
             // For demonstration purposes, we'll show a placeholder in the preview
-            document.getElementById('preview').src = "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80";
+            document.getElementById('preview').src = "/api/placeholder/400/300";
             document.getElementById('preview').classList.remove('hidden');
             document.getElementById('previewControls').classList.remove('hidden');
         }
