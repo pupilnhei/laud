@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
     <title>Mountain Wedding Invitation</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -118,15 +118,39 @@
             transition: transform 0.5s ease;
         }
         
-        /* Additional responsive styles for forced desktop mode */
-        @media (max-width: 768px) {
-            .header-carousel {
-                height: 450px;
-                overflow-x: auto; /* Allow horizontal scrolling on very small screens */
+        /* Remove all responsive adjustments to enforce desktop view */
+        @media (max-width: 1024px) {
+            body {
+                min-width: 1024px;
+                overflow-x: auto;
             }
             
-            .header-carousel-item .flex {
-                min-width: 100%; /* Ensure the flex container takes full width */
+            /* Ensure fixed widths are maintained */
+            .container {
+                width: 1024px !important;
+                max-width: 1024px !important;
+            }
+            
+            /* Keep desktop height for carousel */
+            .header-carousel {
+                height: 500px !important;
+            }
+            
+            /* Disable any responsive layout shifts */
+            .grid-cols-1 {
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            }
+            
+            /* Ensure fixed widths for flex layouts */
+            .w-1/2 {
+                width: 480px !important;
+            }
+            
+            /* No font size reductions */
+            .text-4xl, .text-3xl, .text-2xl {
+                font-size: inherit !important;
+            }
+        }width: 100%; /* Ensure the flex container takes full width */
             }
             
             .header-carousel-item .w-1/2 {
@@ -397,22 +421,22 @@
         </div>
     </nav>
 
-    <!-- Force Desktop Mode Header Carousel -->
+    <!-- Fixed Width Desktop-Style Header Carousel -->
     <header class="relative pt-24">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-6" style="width: 1024px; max-width: none;">
             <!-- Desktop Version (Image & Text Side by Side) - Now shown on all devices -->
-            <div class="header-carousel w-full">
+            <div class="header-carousel w-full" style="width: 960px;">
                 <div class="header-carousel-container">
                     <!-- Slide 1 -->
                     <div class="header-carousel-item">
-                        <div class="flex flex-row h-full">
-                            <div class="w-1/2 p-4 flex items-center justify-center">
+                        <div class="flex flex-row h-full" style="min-width: 960px;">
+                            <div class="w-1/2 p-4 flex items-center justify-center" style="width: 480px;">
                                 <div class="text-center px-8">
                                     <h3 class="text-4xl script-font mb-4">Our Mountain Love</h3>
                                     <p class="text-gray-700">Where our hearts met among the towering peaks of Uttarakhand</p>
                                 </div>
                             </div>
-                            <div class="w-1/2 overflow-hidden">
+                            <div class="w-1/2 overflow-hidden" style="width: 480px;">
                                 <img src="/images/coup1.jpg" alt="Mountain Wedding" class="carousel-image h-full object-cover">
                             </div>
                         </div>
@@ -420,11 +444,11 @@
                     
                     <!-- Slide 2 -->
                     <div class="header-carousel-item">
-                        <div class="flex flex-row h-full">
-                            <div class="w-1/2 overflow-hidden">
+                        <div class="flex flex-row h-full" style="min-width: 960px;">
+                            <div class="w-1/2 overflow-hidden" style="width: 480px;">
                                 <img src="/images/handm.jpg" alt="Face Cover Mos" class="carousel-image h-full object-cover">
                             </div>
-                            <div class="w-1/2 p-4 flex items-center justify-center">
+                            <div class="w-1/2 p-4 flex items-center justify-center" style="width: 480px;">
                                 <div class="text-center px-8">
                                     <h3 class="text-4xl script-font mb-4">Traditional Ceremonies</h3>
                                     <p class="text-gray-700">Celebrating our love through cherished cultural traditions</p>
@@ -435,14 +459,14 @@
                     
                     <!-- Slide 3 -->
                     <div class="header-carousel-item">
-                        <div class="flex flex-row h-full">
-                            <div class="w-1/2 p-4 flex items-center justify-center">
+                        <div class="flex flex-row h-full" style="min-width: 960px;">
+                            <div class="w-1/2 p-4 flex items-center justify-center" style="width: 480px;">
                                 <div class="text-center px-8">
                                     <h3 class="text-4xl script-font mb-4">Our Journey</h3>
                                     <p class="text-gray-700">Five years of memories leading to our special day</p>
                                 </div>
                             </div>
-                            <div class="w-1/2 overflow-hidden">
+                            <div class="w-1/2 overflow-hidden" style="width: 480px;">
                                 <img src="/images/coup2.jpg" alt="Uttarakhand Mountains" class="carousel-image h-full object-cover">
                             </div>
                         </div>
@@ -450,11 +474,11 @@
                     
                     <!-- Slide 4 -->
                     <div class="header-carousel-item">
-                        <div class="flex flex-row h-full">
-                            <div class="w-1/2 overflow-hidden">
+                        <div class="flex flex-row h-full" style="min-width: 960px;">
+                            <div class="w-1/2 overflow-hidden" style="width: 480px;">
                                 <img src="/images/coup3.jpg" alt="Wedding Celebration" class="carousel-image h-full object-cover">
                             </div>
-                            <div class="w-1/2 p-4 flex items-center justify-center">
+                            <div class="w-1/2 p-4 flex items-center justify-center" style="width: 480px;">
                                 <div class="text-center px-8">
                                     <h3 class="text-4xl script-font mb-4">Celebrate With Us</h3>
                                     <p class="text-gray-700">Join us for a wedding celebration surrounded by nature</p>
@@ -465,14 +489,14 @@
                     
                     <!-- Slide 5 -->
                     <div class="header-carousel-item">
-                        <div class="flex flex-row h-full">
-                            <div class="w-1/2 p-4 flex items-center justify-center">
+                        <div class="flex flex-row h-full" style="min-width: 960px;">
+                            <div class="w-1/2 p-4 flex items-center justify-center" style="width: 480px;">
                                 <div class="text-center px-8">
                                     <h3 class="text-4xl script-font mb-4">Sacred Bond</h3>
                                     <p class="text-gray-700">Joining our hearts and souls among the majestic mountains</p>
                                 </div>
                             </div>
-                            <div class="w-1/2 overflow-hidden">
+                            <div class="w-1/2 overflow-hidden" style="width: 480px;">
                                 <img src="/images/hand.jpg" alt="Face Cover" class="carousel-image h-full object-cover">
                             </div>
                         </div>
@@ -496,7 +520,7 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-8">
+    <main class="container mx-auto px-6 py-8" style="width: 1024px; max-width: none;">
         <!-- Celebration Section -->
         <section class="text-center mb-12 mt-8" id="celebration">
             <h2 class="text-5xl script-font mb-6 text-center">
@@ -514,11 +538,11 @@
         </section>
         
         <!-- NEW: Balanced Image-Text Section -->
-        <section class="image-text-container image-left mb-16">
-            <div class="image-container">
-                <img src="/images/coup1.jpg" alt="Couple in Mountains" class="dynamic-image">
+        <section class="flex flex-row mb-16" style="width: 960px;">
+            <div class="w-1/2 overflow-hidden" style="width: 480px; height: 400px;">
+                <img src="/images/coup1.jpg" alt="Couple in Mountains" class="dynamic-image h-full object-cover">
             </div>
-            <div class="text-container">
+            <div class="w-1/2 p-6" style="width: 480px;">
                 <h3 class="text-3xl script-font mb-6">Our Journey</h3>
                 <p class="mb-4">Our love story began in the foothills of the Himalayas, where we first met during a trek in Uttarakhand.</p>
                 <p>The mountains have always been our sanctuary, and we're excited to celebrate our union in the place that means so much to us both.</p>
@@ -533,14 +557,14 @@
         </section>
         
         <!-- NEW: Reversed Image-Text Section -->
-        <section class="image-text-container image-right mb-16">
-            <div class="image-container">
-                <img src="/images/hand.jpg" alt="Traditional Ceremony" class="dynamic-image">
-            </div>
-            <div class="text-container">
+        <section class="flex flex-row mb-16" style="width: 960px;">
+            <div class="w-1/2 p-6" style="width: 480px;">
                 <h3 class="text-3xl script-font mb-6">Traditional Celebrations</h3>
                 <p class="mb-4">We're blending modern love with age-old traditions in our three-day celebration.</p>
                 <p>From the vibrant Mehndi to the sacred Baande ceremony, each ritual honors our heritage while creating new memories in the breathtaking Uttarakhand landscape.</p>
+            </div>
+            <div class="w-1/2 overflow-hidden" style="width: 480px; height: 400px;">
+                <img src="/images/hand.jpg" alt="Traditional Ceremony" class="dynamic-image h-full object-cover">
             </div>
         </section>
 
@@ -588,11 +612,11 @@
         </form>
 
         <!-- Events Section -->
-        <section id="events" class="mb-16">
+        <section id="events" class="mb-16" style="width: 960px;">
             <h2 class="text-5xl script-font mb-8 text-center">Events</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-3 gap-8">
                 <!-- Mehndi Event -->
-                <div class="event-card event-mehndi">
+                <div class="event-card event-mehndi" style="width: 300px;">
                     <div class="p-6">
                         <h3 class="text-3xl script-font mb-4">Mehndi Ceremony</h3>
                         <blockquote class="italic text-lg mb-6">"As the henna adorns our hands, let our hearts be filled with joy and celebration."</blockquote>
@@ -610,7 +634,7 @@
                 </div>
 
                 <!-- Haldi Event -->
-                <div class="event-card event-haldi">
+                <div class="event-card event-haldi" style="width: 300px;">
                     <div class="p-6">
                         <h3 class="text-3xl script-font mb-4">Haldi Ceremony</h3>
                         <blockquote class="italic text-lg mb-6">"Let the golden hue of turmeric bring warmth and auspiciousness to our union."</blockquote>
@@ -628,7 +652,7 @@
                 </div>
 
                 <!-- Wedding Event -->
-                <div class="event-card event-wedding">
+                <div class="event-card event-wedding" style="width: 300px;">
                     <div class="p-6">
                         <h3 class="text-3xl script-font mb-4">Baande Ceremony</h3>
                         <blockquote class="italic text-lg mb-6">"Today, we join our hearts and souls in the sacred bond of marriage, surrounded by the majestic mountains."</blockquote>
@@ -656,7 +680,7 @@
         </section>
 
         <!-- Our Story Section -->
-        <section class="story-section bg-white rounded-lg shadow-md p-8 mb-16">
+        <section class="story-section bg-white rounded-lg shadow-md p-8 mb-16" style="width: 960px;">
             <div class="story-content">
                 <h2 class="text-5xl script-font mb-6 text-center">Our Story</h2>
                 <div class="testimonial bg-gray-50 p-6 rounded-lg italic text-lg mb-6">
@@ -684,10 +708,10 @@
         </section>
 
         <!-- Location Section - Improved -->
-        <section id="location" class="mb-16">
+        <section id="location" class="mb-16" style="width: 960px;">
             <h2 class="text-5xl script-font mb-6 text-center">Celebration Venue</h2>
             <div class="rounded-lg shadow-md p-6 bg-white">
-                <div class="location-carousel mb-6 rounded-lg overflow-hidden">
+                <div class="location-carousel mb-6 rounded-lg overflow-hidden" style="height: 400px;">
                     <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Venue Image 1" class="active">
                     <img src="https://images.unsplash.com/photo-1563911302283-d2bc129e7570?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Venue Image 2">
                 </div>
@@ -708,7 +732,7 @@
     </main>
 
     <footer class="py-12 mt-12 bg-green-800 text-white">
-        <div class="container mx-auto px-6 text-center">
+        <div class="container mx-auto px-6 text-center" style="width: 1024px; max-width: none;">
             <p class="text-2xl script-font mb-4">Join us in celebrating our love</p>
             <p class="max-w-2xl mx-auto">
                 We cordially invite you to be part of our special day as we embark on this beautiful journey of love
