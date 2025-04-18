@@ -446,47 +446,6 @@ function uploadPhotos() {
     document.getElementById('fileInput').click();
 }
 
-// Add this function to your existing script.js file
-
-// Photo sharing with Google Drive
-function showPhotoOptions() {
-    document.getElementById('photoModal').classList.remove('hidden');
-    document.getElementById('photoModal').classList.add('flex');
-}
-
-function closePhotoModal() {
-    document.getElementById('photoModal').classList.add('hidden');
-    document.getElementById('photoModal').classList.remove('flex');
-}
-
-function takePhoto() {
-    // For mobile devices, access camera if available
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        alert("Opening camera. Please allow camera access if prompted.");
-        // Actual camera implementation would go here
-        // For now, just redirect to Google Drive upload after "taking photo"
-        uploadToGoogleDrive();
-    } else {
-        alert("Camera access not available. Redirecting to photo upload.");
-        uploadToGoogleDrive();
-    }
-}
-
-function uploadToGoogleDrive() {
-    // Google Drive folder for wedding photos
-    // Replace this URL with your actual Google Drive folder link
-    const googleDriveLink = "https://drive.google.com/drive/folders/1eZTo3jd3sT_xNnaq1aA0TUa-f-L05EMG";
-    
-    // Open Google Drive in a new tab
-    window.open(googleDriveLink, '_blank');
-}
-
-// Make sure these functions are available globally
-window.showPhotoOptions = showPhotoOptions;
-window.closePhotoModal = closePhotoModal;
-window.takePhoto = takePhoto;
-window.uploadToGoogleDrive = uploadToGoogleDrive;
-
 document.getElementById('fileInput').addEventListener('change', function(event) {
     const files = event.target.files;
     if (files.length > 0) {
