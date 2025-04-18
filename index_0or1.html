@@ -85,81 +85,44 @@
             background-color: var(--secondary-color);
         }
         
-        /* Improved carousel to handle image dynamics better */
-        .header-carousel {
-            position: relative;
-            overflow: hidden;
-            height: 600px;
-            border-radius: 12px;
-            margin-top: 20px;
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
-        }
+        /* Updated CSS styles to increase header carousel height */
+.header-carousel {
+    position: relative;
+    overflow: hidden;
+    height: 700px; /* Increased from 500px to 700px */
+    border-radius: 12px;
+    margin-top: 20px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+}
 
-        .header-carousel-container {
-            display: flex;
-            transition: transform 0.5s ease;
-            height: 100%;
-        }
+.header-carousel-container {
+    display: flex;
+    transition: transform 0.5s ease;
+    height: 100%;
+}
 
-        .header-carousel-item {
-            flex: 0 0 100%;
-            height: 100%;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+.header-carousel-item {
+    flex: 0 0 100%;
+    height: 100%;
+    position: relative;
+}
 
-        .header-carousel-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        /* Improved handling for portrait images */
+.header-carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Responsive adjustments for the taller carousel */
+@media (max-width: 768px) {
+    .header-carousel {
+        height: 450px; /* Slightly taller on mobile but not too tall */
+    }
+}
+        /* Special handling for portrait images */
         .portrait-image {
-            width: auto !important;
-            height: 100% !important;
-            max-width: none !important;
-            object-position: center !important;
-        }
-
-        /* Image balance section */
-        .image-text-container {
-            display: flex;
-            align-items: center;
-            margin: 3rem 0;
-        }
-
-        .image-text-container.image-left {
-            flex-direction: row;
-        }
-
-        .image-text-container.image-right {
-            flex-direction: row-reverse;
-        }
-
-        .image-container {
-            flex: 1;
-            height: 400px;
-            overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .text-container {
-            flex: 1;
-            padding: 2rem;
+            object-position: center 25%; /* Keeps focus on top portion for portrait images */
         }
         
         .location-carousel {
@@ -228,60 +191,45 @@
             50% { opacity: 0; }
         }
         
-        /* Fixed CSS for flower animation */
-        #leaves-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 100;
-            overflow: hidden;
-        }
+      /* Fixed CSS for leaf/flower animation */
+#leaves-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    overflow: hidden;
+}
 
-        .leaf {
-            position: absolute;
-            top: -50px;
-            font-size: 30px;
-            animation-name: fall, sway;
-            animation-timing-function: linear, ease-in-out;
-            animation-iteration-count: 1, infinite;
-            animation-direction: normal, alternate;
-        }
+.leaf {
+    position: absolute;
+    top: -50px;
+    font-size: 30px; /* Increased size */
+    animation-name: fall, sway;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: 1, infinite;
+    animation-direction: normal, alternate;
+}
 
-        @keyframes fall {
-            0% { 
-                transform: translateY(0) rotate(0deg); 
-                opacity: 0.8;
-            }
-            100% { 
-                transform: translateY(calc(100vh + 50px)) rotate(360deg); 
-                opacity: 0.4;
-            }
-        }
+@keyframes fall {
+    0% { 
+        transform: translateY(0) rotate(0deg); 
+        opacity: 0.8;
+    }
+    100% { 
+        transform: translateY(calc(100vh + 50px)) rotate(360deg); 
+        opacity: 0.4;
+    }
+}
 
-        @keyframes sway {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(100px); }
-        }
+@keyframes sway {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(100px); }
+}
 
-        /* Responsive adjustments */
-        @media (max-width: 1024px) {
-            .image-text-container {
-                flex-direction: column !important;
-            }
-            
-            .image-container, .text-container {
-                width: 100%;
-                max-width: 100%;
-            }
-            
-            .text-container {
-                padding: 2rem 0;
-            }
-        }
-        
+/* Updated JavaScript for Leaves/Flowers */
         @media (max-width: 768px) {
             .countdown-container {
                 flex-wrap: wrap;
@@ -298,38 +246,11 @@
             }
             
             .header-carousel {
-                height: 400px;
+                height: 300px;
             }
             
             .location-carousel {
                 height: 300px;
-            }
-            
-            .image-container {
-                height: 300px;
-            }
-            
-            .header-carousel-item img.portrait-image {
-                height: 100% !important;
-                width: auto !important;
-                max-width: none !important;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .header-carousel {
-                height: 350px;
-            }
-            
-            .image-container {
-                height: 250px;
-            }
-            
-            /* Make portrait images fill width on very small screens */
-            .header-carousel-item img.portrait-image {
-                height: auto !important;
-                width: 100% !important;
-                object-position: top !important;
             }
         }
     </style>
@@ -358,26 +279,27 @@
         </div>
     </nav>
 
-    <!-- Improved Header Carousel -->
-    <header class="relative pt-24">
+    <!-- Header Carousel - FIXED -->
+    <header class="relative mt-20 pt-8">
         <div class="container mx-auto px-6">
             <div class="header-carousel w-full">
                 <div class="header-carousel-container">
-                    <div class="header-carousel-item">
-                        <img src="/images/coup1.jpg" alt="Mountain Wedding" class="carousel-image">
+                    <div class="header-carousel-item h-[500px]">
+                        <img src="/images/coup1.jpg" alt="Mountain Wedding" class="object-cover">
                     </div>
-                    <div class="header-carousel-item">
-                        <img src="/images/handm.jpg" alt="Face Cover Mos" class="carousel-image">
+					<div class="header-carousel-item h-[500px]">
+                        <img src="/images/handm.jpg" alt="Face Cover Mos" class="object-cover">
                     </div>
-                    <div class="header-carousel-item">
-                        <img src="/images/coup2.jpg" alt="Uttarakhand Mountains" class="carousel-image">
+                    <div class="header-carousel-item h-[500px]">
+                        <img src="/images/coup2.jpg" alt="Uttarakhand Mountains" class="object-cover">
                     </div>
-                    <div class="header-carousel-item">
-                        <img src="/images/coup3.jpg" alt="Wedding Celebration" class="carousel-image">
+                    <div class="header-carousel-item h-[500px]">
+                        <img src="/images/coup3.jpg" alt="Wedding Celebration" class="object-cover">
                     </div>
-                    <div class="header-carousel-item">
-                        <img src="/images/hand.jpg" alt="Face Cover" class="carousel-image">
+					<div class="header-carousel-item h-[500px]">
+                        <img src="/images/hand.jpg" alt="Face Cover" class="object-cover">
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -398,36 +320,15 @@
                 <h3 class="text-2xl script-font mb-4">Counting Down to Our Special Day</h3>
                 <div id="countdown" class="countdown-container"></div>
             </div>
-        </section>
-        
-        <!-- NEW: Balanced Image-Text Section -->
-        <section class="image-text-container image-left mb-16">
-            <div class="image-container">
-                <img src="/images/coup1.jpg" alt="Couple in Mountains" class="dynamic-image">
-            </div>
-            <div class="text-container">
-                <h3 class="text-3xl script-font mb-6">Our Journey</h3>
-                <p class="mb-4">Our love story began in the foothills of the Himalayas, where we first met during a trek in Uttarakhand.</p>
-                <p>The mountains have always been our sanctuary, and we're excited to celebrate our union in the place that means so much to us both.</p>
-                <div class="mt-8">
-                    <button 
-                        class="photo-btn px-6 py-2 rounded-full transition duration-300 text-base"
-                        onclick="showPhotoOptions()">
-                        Share Your Moments
-                    </button>
-                </div>
-            </div>
-        </section>
-        
-        <!-- NEW: Reversed Image-Text Section -->
-        <section class="image-text-container image-right mb-16">
-            <div class="image-container">
-                <img src="/images/hand.jpg" alt="Traditional Ceremony" class="dynamic-image">
-            </div>
-            <div class="text-container">
-                <h3 class="text-3xl script-font mb-6">Traditional Celebrations</h3>
-                <p class="mb-4">We're blending modern love with age-old traditions in our three-day celebration.</p>
-                <p>From the vibrant Mehndi to the sacred Baande ceremony, each ritual honors our heritage while creating new memories in the breathtaking Uttarakhand landscape.</p>
+            
+            <div class="mt-10">
+                <p class="text-xl script-font mb-2">Help us capture the magic of our special day!</p>
+                <p class="text-base italic text-gray-600 mb-4">Click creative pictures during the celebration and share them with us.</p>
+                <button 
+                    class="photo-btn px-6 py-2 rounded-full transition duration-300 text-base"
+                    onclick="showPhotoOptions()">
+                    Share Your Moments
+                </button>
             </div>
         </section>
 
@@ -570,7 +471,7 @@
             </div>
         </section>
 
-        <!-- Location Section - Improved -->
+        <!-- Location Section - FIXED -->
         <section id="location" class="mb-16">
             <h2 class="text-5xl script-font mb-6 text-center">Celebration Venue</h2>
             <div class="rounded-lg shadow-md p-6 bg-white">
@@ -620,7 +521,8 @@
         // Initialize everything when the page loads
         window.onload = function() {
             startAnimations();
-            initializeFlowers();
+           // initializeLeaves();
+			initializeFlowers();
             animateCards();
             setupCountdown();
             setupImageHandling();
@@ -634,32 +536,21 @@
 
         // Setup proper image handling
         function setupImageHandling() {
-            // Check all images and apply the appropriate classes based on orientation
+            // Check portrait images and apply special class
             const allImages = document.querySelectorAll('img');
             allImages.forEach(img => {
                 img.onload = function() {
-                    if (this.naturalHeight > this.naturalWidth * 1.2) {
+                    if (this.naturalHeight > this.naturalWidth) {
                         this.classList.add('portrait-image');
                     }
                 };
                 
                 // If image is already loaded
                 if (img.complete) {
-                    if (img.naturalHeight > img.naturalWidth * 1.2) {
+                    if (img.naturalHeight > img.naturalWidth) {
                         img.classList.add('portrait-image');
                     }
                 }
-            });
-            
-            // Handle dynamic images in the image-text sections
-            const dynamicImages = document.querySelectorAll('.dynamic-image');
-            dynamicImages.forEach(img => {
-                img.addEventListener('mouseover', function() {
-                    this.style.transform = 'scale(1.05)';
-                });
-                img.addEventListener('mouseout', function() {
-                    this.style.transform = 'scale(1)';
-                });
             });
         }
 
@@ -701,7 +592,7 @@
                 element.style.opacity = Math.min(opacity, 1);
                 if (opacity < 1) {
                     requestAnimationFrame(increaseOpacity);
-                } else if (callback) {
+				} else if (callback) {
                     callback();
                 }
             }
@@ -761,46 +652,81 @@
             }, 1000);
         }
 
-        // Improved flower petals falling animation
-        const flowers = ['🌸', '🌹', '🌺', '🌼', '💮', '🌷', '💐'];
-        const maxFlowers = 20;
-        let currentFlowers = 0;
+        // Create and animate falling leaves
+        const leaves = ['🍃', '🍂', '🍁', '🌿', '☘️'];
+        const maxLeaves = 15;
+        let currentLeaves = 0;
 
-        function createFlower() {
-            if (currentFlowers >= maxFlowers) return;
+        function createLeaf() {
+            if (currentLeaves >= maxLeaves) return;
 
-            const flower = document.createElement('div');
-            flower.classList.add('leaf'); // Using the same CSS class for simplicity
-            flower.style.left = `${Math.random() * 100}vw`;
-            
-            // Varying falling speeds
-            const duration = Math.random() * 5 + 8; // 8-13 seconds to fall
-            flower.style.animationDuration = `${duration}s, 3s`; // First duration for fall, second for sway
-            
-            // Varying sizes
-            const size = Math.random() * 10 + 20; // 20-30px
-            flower.style.fontSize = `${size}px`;
-            
-            // Random flower emoji
-            flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
-            
-            document.getElementById('leaves-container').appendChild(flower);
-            currentFlowers++;
+            const leaf = document.createElement('div');
+            leaf.classList.add('leaf');
+            leaf.style.left = `${Math.random() * 100}vw`;
+            leaf.style.animationDuration = `${Math.random() * 3 + 5}s`;
+            leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
+            document.getElementById('leaves-container').appendChild(leaf);
+            currentLeaves++;
 
-            flower.addEventListener('animationend', () => {
-                flower.remove();
-                currentFlowers--;
-                setTimeout(createFlower, Math.random() * 800);
+            leaf.addEventListener('animationend', () => {
+                leaf.remove();
+                currentLeaves--;
+                setTimeout(createLeaf, Math.random() * 1000);
             });
         }
 
-        function initializeFlowers() {
-            for (let i = 0; i < maxFlowers; i++) {
-                setTimeout(createFlower, Math.random() * 3000);
+        function initializeLeaves() {
+            for (let i = 0; i < maxLeaves; i++) {
+                setTimeout(createLeaf, Math.random() * 3000);
             }
         }
 
-        // Improved header carousel control
+		// Updated flower petals falling animation
+// Changed from leaves to flower petals for wedding theme
+const flowers = ['🌸', '🌹', '🌺', '🌼', '💮', '🌷', '💐'];
+const maxFlowers = 20; // Increased number
+let currentFlowers = 0;
+
+function createFlower() {
+    if (currentFlowers >= maxFlowers) return;
+
+    const flower = document.createElement('div');
+    flower.classList.add('leaf'); // Using the same CSS class for simplicity
+    flower.style.left = `${Math.random() * 100}vw`;
+    
+    // Varying falling speeds
+    const duration = Math.random() * 5 + 8; // 8-13 seconds to fall
+    flower.style.animationDuration = `${duration}s, 3s`; // First duration for fall, second for sway
+    
+    // Varying sizes
+    const size = Math.random() * 10 + 20; // 20-30px
+    flower.style.fontSize = `${size}px`;
+    
+    // Random flower emoji
+    flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+    
+    document.getElementById('leaves-container').appendChild(flower);
+    currentFlowers++;
+
+    flower.addEventListener('animationend', () => {
+        flower.remove();
+        currentFlowers--;
+        setTimeout(createFlower, Math.random() * 800);
+    });
+}
+
+function initializeFlowers() {
+    // Change the function name in your onload handler from initializeLeaves() to initializeFlowers()
+    for (let i = 0; i < maxFlowers; i++) {
+        setTimeout(createFlower, Math.random() * 3000);
+    }
+}
+
+// In your window.onload function, change:
+// initializeLeaves(); 
+// to:
+// initializeFlowers();
+        // Header carousel control - with fixes for better image handling
         const headerCarouselContainer = document.querySelector('.header-carousel-container');
         const headerCarouselItems = document.querySelectorAll('.header-carousel-item');
         let headerCurrentIndex = 0;
