@@ -118,6 +118,17 @@
             transition: transform 0.5s ease;
         }
         
+        /* Styling for the side-by-side carousel */
+        @media (min-width: 1024px) {
+            .header-carousel {
+                height: 500px;
+            }
+            
+            .header-carousel-item .flex {
+                height: 500px;
+            }
+        }
+        
         /* Improved handling for portrait images */
         .portrait-image {
             width: auto !important;
@@ -358,26 +369,145 @@
         </div>
     </nav>
 
-    <!-- Improved Header Carousel -->
+    <!-- Side-by-Side Header Carousel for Desktop -->
     <header class="relative pt-24">
         <div class="container mx-auto px-6">
-            <div class="header-carousel w-full">
+            <!-- Desktop Version (Image & Text Side by Side) -->
+            <div class="header-carousel w-full hidden lg:block">
+                <div class="header-carousel-container">
+                    <!-- Slide 1 -->
+                    <div class="header-carousel-item">
+                        <div class="flex flex-row h-full">
+                            <div class="w-1/2 p-4 flex items-center justify-center">
+                                <div class="text-center px-8">
+                                    <h3 class="text-4xl script-font mb-4">Our Mountain Love</h3>
+                                    <p class="text-gray-700">Where our hearts met among the towering peaks of Uttarakhand</p>
+                                </div>
+                            </div>
+                            <div class="w-1/2 overflow-hidden">
+                                <img src="/images/coup1.jpg" alt="Mountain Wedding" class="carousel-image h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2 -->
+                    <div class="header-carousel-item">
+                        <div class="flex flex-row h-full">
+                            <div class="w-1/2 overflow-hidden">
+                                <img src="/images/handm.jpg" alt="Face Cover Mos" class="carousel-image h-full object-cover">
+                            </div>
+                            <div class="w-1/2 p-4 flex items-center justify-center">
+                                <div class="text-center px-8">
+                                    <h3 class="text-4xl script-font mb-4">Traditional Ceremonies</h3>
+                                    <p class="text-gray-700">Celebrating our love through cherished cultural traditions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3 -->
+                    <div class="header-carousel-item">
+                        <div class="flex flex-row h-full">
+                            <div class="w-1/2 p-4 flex items-center justify-center">
+                                <div class="text-center px-8">
+                                    <h3 class="text-4xl script-font mb-4">Our Journey</h3>
+                                    <p class="text-gray-700">Five years of memories leading to our special day</p>
+                                </div>
+                            </div>
+                            <div class="w-1/2 overflow-hidden">
+                                <img src="/images/coup2.jpg" alt="Uttarakhand Mountains" class="carousel-image h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 4 -->
+                    <div class="header-carousel-item">
+                        <div class="flex flex-row h-full">
+                            <div class="w-1/2 overflow-hidden">
+                                <img src="/images/coup3.jpg" alt="Wedding Celebration" class="carousel-image h-full object-cover">
+                            </div>
+                            <div class="w-1/2 p-4 flex items-center justify-center">
+                                <div class="text-center px-8">
+                                    <h3 class="text-4xl script-font mb-4">Celebrate With Us</h3>
+                                    <p class="text-gray-700">Join us for a wedding celebration surrounded by nature</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 5 -->
+                    <div class="header-carousel-item">
+                        <div class="flex flex-row h-full">
+                            <div class="w-1/2 p-4 flex items-center justify-center">
+                                <div class="text-center px-8">
+                                    <h3 class="text-4xl script-font mb-4">Sacred Bond</h3>
+                                    <p class="text-gray-700">Joining our hearts and souls among the majestic mountains</p>
+                                </div>
+                            </div>
+                            <div class="w-1/2 overflow-hidden">
+                                <img src="/images/hand.jpg" alt="Face Cover" class="carousel-image h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Carousel Navigation -->
+                <div class="flex justify-center mt-4">
+                    <button class="mx-1 p-2 bg-green-800 text-white rounded-full" onclick="slideHeaderCarousel(-1)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button class="mx-1 p-2 bg-green-800 text-white rounded-full" onclick="slideHeaderCarousel(1)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Version (Image Only) -->
+            <div class="header-carousel w-full lg:hidden">
                 <div class="header-carousel-container">
                     <div class="header-carousel-item">
                         <img src="/images/coup1.jpg" alt="Mountain Wedding" class="carousel-image">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                            <h3 class="text-2xl script-font">Our Mountain Love</h3>
+                        </div>
                     </div>
                     <div class="header-carousel-item">
                         <img src="/images/handm.jpg" alt="Face Cover Mos" class="carousel-image">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                            <h3 class="text-2xl script-font">Traditional Ceremonies</h3>
+                        </div>
                     </div>
                     <div class="header-carousel-item">
                         <img src="/images/coup2.jpg" alt="Uttarakhand Mountains" class="carousel-image">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                            <h3 class="text-2xl script-font">Our Journey</h3>
+                        </div>
                     </div>
                     <div class="header-carousel-item">
                         <img src="/images/coup3.jpg" alt="Wedding Celebration" class="carousel-image">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                            <h3 class="text-2xl script-font">Celebrate With Us</h3>
+                        </div>
                     </div>
                     <div class="header-carousel-item">
                         <img src="/images/hand.jpg" alt="Face Cover" class="carousel-image">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                            <h3 class="text-2xl script-font">Sacred Bond</h3>
+                        </div>
                     </div>
+                </div>
+                
+                <!-- Mobile Carousel Navigation Dots -->
+                <div class="flex justify-center mt-4">
+                    <span class="inline-block h-3 w-3 rounded-full bg-green-800 mx-1 cursor-pointer carousel-dot active" data-index="0"></span>
+                    <span class="inline-block h-3 w-3 rounded-full bg-gray-300 mx-1 cursor-pointer carousel-dot" data-index="1"></span>
+                    <span class="inline-block h-3 w-3 rounded-full bg-gray-300 mx-1 cursor-pointer carousel-dot" data-index="2"></span>
+                    <span class="inline-block h-3 w-3 rounded-full bg-gray-300 mx-1 cursor-pointer carousel-dot" data-index="3"></span>
+                    <span class="inline-block h-3 w-3 rounded-full bg-gray-300 mx-1 cursor-pointer carousel-dot" data-index="4"></span>
                 </div>
             </div>
         </div>
@@ -801,21 +931,48 @@
         }
 
         // Improved header carousel control
-        const headerCarouselContainer = document.querySelector('.header-carousel-container');
+        const headerCarouselContainers = document.querySelectorAll('.header-carousel-container');
         const headerCarouselItems = document.querySelectorAll('.header-carousel-item');
+        const carouselDots = document.querySelectorAll('.carousel-dot');
         let headerCurrentIndex = 0;
 
         function updateHeaderCarousel() {
-            headerCarouselContainer.style.transform = `translateX(-${headerCurrentIndex * 100}%)`;
+            // Update all carousel containers (both mobile and desktop)
+            headerCarouselContainers.forEach(container => {
+                container.style.transform = `translateX(-${headerCurrentIndex * 100}%)`;
+            });
+            
+            // Update the active dot for mobile
+            if (carouselDots.length > 0) {
+                carouselDots.forEach((dot, i) => {
+                    if (i === headerCurrentIndex) {
+                        dot.classList.add('bg-green-800');
+                        dot.classList.remove('bg-gray-300');
+                    } else {
+                        dot.classList.remove('bg-green-800');
+                        dot.classList.add('bg-gray-300');
+                    }
+                });
+            }
         }
 
         function slideHeaderCarousel(direction) {
-            headerCurrentIndex = (headerCurrentIndex + direction + headerCarouselItems.length) % headerCarouselItems.length;
+            headerCurrentIndex = (headerCurrentIndex + direction + headerCarouselItems.length/2) % (headerCarouselItems.length/2);
             updateHeaderCarousel();
         }
+        
+        // Setup carousel dot click handlers
+        if (carouselDots.length > 0) {
+            carouselDots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    headerCurrentIndex = parseInt(this.getAttribute('data-index'));
+                    updateHeaderCarousel();
+                });
+            });
+        }
 
-        // Auto slide every 4 seconds
-        setInterval(() => slideHeaderCarousel(1), 4000);
+        // Auto slide every 5 seconds
+        setInterval(() => slideHeaderCarousel(1), 5000);
 
         // Initialize the carousel
         updateHeaderCarousel();
