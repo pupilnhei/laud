@@ -227,38 +227,67 @@ function capturePhoto(stream) {
     // Close camera view
     closeCameraView();
     
-    // Show loading overlay
-    showLoadingOverlay("Processing your photo...");
-    
-    // Simulate uploading the photo
-    setTimeout(() => {
-        hideLoadingOverlay();
-        showNotification("Thank you! Your wedding photo has been uploaded successfully.", "success");
-    }, 1500);
-    
-    // In a real implementation, you would send the photoData to your server/storage
-    /* ACTUAL IMPLEMENTATION WOULD BE SOMETHING LIKE:
-    fetch('/api/upload-camera-photo', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ photo: photoData })
-    })
-    .then(response => response.json())
-    .then(data => {
-        hideLoadingOverlay();
-        if (data.success) {
-            showNotification("Thank you! Your wedding photo has been uploaded successfully.", "success");
-        } else {
-            showNotification("There was an issue uploading your photo. Please try again.", "error");
+    // Show preview before uploading
+    let previewContainer = document.getElementById('previewContainer');
+    if (!previewContainer) {
+        // Create the preview container
+        previewContainer = document.createElement('div');
+        previewContainer.id = 'previewContainer';
+        previewContainer.className = 'mt-6 text-center';
+        previewContainer.innerHTML = `
+            <h4 class="text-lg font-medium mb-2">Preview Your Photo</h4>
+            <div class="relative inline-block">
+                <img id="preview" class="max-w-full max-h-64 object-contain mx-auto rounded" src="${photoData}" />
+            </div>
+            <div class="mt-4 flex justify-center space-x-3">
+                <button id="retakePhotoBtn" class="btn secondary-btn bg-gray-600 text-white">
+                    Retake
+                </button>
+                <button id="uploadPhotoBtn" class="btn primary-btn">
+                    Upload Photo
+                </button>
+            </div>
+        `;
+        
+        // Append it to the modal
+        document.querySelector('#photoModal .bg-white').appendChild(previewContainer);
+        
+        // Show the modal again
+        showPhotoOptions();
+        
+        // Set up event listeners for the buttons
+        document.getElementById('retakePhotoBtn').addEventListener('click', function() {
+            // Remove the preview
+            previewContainer.remove();
+            // Take another photo
+            takePhoto();
+        });
+        
+        document.getElementById('uploadPhotoBtn').addEventListener('click', function() {
+            // Remove the preview
+            previewContainer.remove();
+            
+            // Show loading overlay
+            showLoadingOverlay("Uploading your photo...");
+            
+            // Simulate uploading the photo
+            setTimeout(() => {
+                hideLoadingOverlay();
+                showNotification("Thank you! Your wedding photo has been added to our collection.", "success");
+                closePhotoModal();
+            }, 1500);
+            
+            // In a real implementation, you would send the photoData to your server/storage
+        });
+    } else {
+        // Update existing preview
+        const preview = document.getElementById('preview');
+        if (preview) {
+            preview.src = photoData;
         }
-    })
-    .catch(error => {
-        hideLoadingOverlay();
-        showNotification("Upload failed. Please try again later.", "error");
-    });
-    */
+        // Show the modal again
+        showPhotoOptions();
+    }
 }
 
 function closeCameraView() {
@@ -291,52 +320,91 @@ document.addEventListener('DOMContentLoaded', function() {
     if (fileInput) {
         fileInput.addEventListener('change', function(e) {
             if (e.target.files.length > 0) {
-                // Show upload in progress
-                showLoadingOverlay("Uploading your photos...");
+                // Show preview for first image
+                const file = e.target.files[0];
+                const reader = new FileReader();
                 
-                // For demo purposes, simulate a background upload
-                setTimeout(() => {
-                    hideLoadingOverlay();
-                    showNotification("Thank you! Your photos have been added to our wedding collection.", "success");
-                    closePhotoModal();
-                }, 2000);
-                
-                // In a real implementation, you would use FormData and fetch/XMLHttpRequest to upload
-                // the files to your server or to Google Drive via API
-                
-                /* ACTUAL IMPLEMENTATION WOULD BE SOMETHING LIKE:
-                const formData = new FormData();
-                
-                // Append all selected files
-                for (let i = 0; i < e.target.files.length; i++) {
-                    formData.append('photos[]', e.target.files[i]);
+                // Create or show preview container
+                let previewContainer = document.getElementById('previewContainer');
+                if (!previewContainer) {
+                    // Create the preview container if it doesn't exist
+                    previewContainer = document.createElement('div');
+                    previewContainer.id = 'previewContainer';
+                    previewContainer.className = 'mt-6 text-center';
+                    previewContainer.innerHTML = `
+                        <h4 class="text-lg font-medium mb-2">Preview Your Photo</h4>
+                        <div class="relative inline-block">
+                            <img id="preview" class="max-w-full max-h-64 object-contain mx-auto rounded" />
+                            <div class="mt-2 text-sm text-gray-500">
+                                <span id="photoCount">${e.target.files.length} photo${e.target.files.length > 1 ? 's' : ''} selected</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-center space-x-3">
+                            <button id="cancelUploadBtn" class="btn secondary-btn bg-gray-600 text-white">
+                                Cancel
+                            </button>
+                            <button id="confirmUploadBtn" class="btn primary-btn">
+                                Upload Photo${e.target.files.length > 1 ? 's' : ''}
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Append it to the modal
+                    document.querySelector('#photoModal .bg-white').appendChild(previewContainer);
+                    
+                    // Set up event listeners for the buttons
+                    document.getElementById('cancelUploadBtn').addEventListener('click', function() {
+                        // Clear the file input
+                        fileInput.value = '';
+                        // Hide the preview
+                        previewContainer.remove();
+                    });
+                    
+                    document.getElementById('confirmUploadBtn').addEventListener('click', function() {
+                        // Simulate uploading
+                        previewContainer.remove();
+                        simulatePhotoUpload(e.target.files);
+                    });
+                } else {
+                    // Update existing preview container
+                    document.getElementById('photoCount').textContent = 
+                        `${e.target.files.length} photo${e.target.files.length > 1 ? 's' : ''} selected`;
+                    document.getElementById('confirmUploadBtn').textContent = 
+                        `Upload Photo${e.target.files.length > 1 ? 's' : ''}`;
+                    previewContainer.style.display = 'block';
                 }
                 
-                // Send to your server endpoint that handles the Google Drive upload
-                fetch('/api/upload-photos', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    hideLoadingOverlay();
-                    if (data.success) {
-                        showNotification("Thank you! Your photos have been added to our wedding collection.", "success");
-                    } else {
-                        showNotification("There was an issue uploading your photos. Please try again.", "error");
+                // Show preview of the first image
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    if (preview) {
+                        preview.src = e.target.result;
                     }
-                    closePhotoModal();
-                })
-                .catch(error => {
-                    hideLoadingOverlay();
-                    showNotification("Upload failed. Please try again later.", "error");
-                    closePhotoModal();
-                });
-                */
+                };
+                
+                reader.readAsDataURL(file);
             }
         });
     }
 });
+
+function simulatePhotoUpload(files) {
+    // Show loading overlay
+    showLoadingOverlay(`Uploading ${files.length} photo${files.length > 1 ? 's' : ''}...`);
+    
+    // Simulate a delay for uploading
+    setTimeout(() => {
+        hideLoadingOverlay();
+        showNotification(`Thank you! ${files.length} photo${files.length > 1 ? 's have' : ' has'} been added to our wedding collection.`, "success");
+        closePhotoModal();
+        
+        // Clear the file input for next time
+        document.getElementById('fileInput').value = '';
+    }, 2000);
+    
+    // In a real implementation, you would use FormData and fetch/XMLHttpRequest to upload
+    // the files to your server or to storage service
+}
 
 function uploadCapturedPhoto() {
     // In a real implementation, this would upload the photo to your storage
