@@ -173,12 +173,89 @@
         <!-- RSVP Section -->
         <div class="content-section">
             <h2 class="section-title script-font">Join Our Wedding</h2>
-            <div class="bg-white p-4 rounded-lg shadow text-center">
-                <p class="mb-4">We would be honored to have you join us as we celebrate our wedding day!</p>
-                <p class="text-sm mb-4">Please RSVP by March 15, 2025</p>
-                <button class="btn primary-btn" onclick="openRSVPForm()">
-                    <i class="fas fa-envelope-open-text mr-2"></i>RSVP Now
-                </button>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <p class="mb-4 text-center">We would be honored to have you join us as we celebrate our wedding day!</p>
+                <p class="text-sm mb-6 text-center">Please RSVP by March 15, 2025</p>
+                
+                <!-- RSVP Form -->
+                <form id="rsvpForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium mb-1">Your Name*</label>
+                            <input type="text" id="name" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium mb-1">Email Address*</label>
+                            <input type="email" id="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="phone" class="block text-sm font-medium mb-1">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Will you attend?*</label>
+                            <div class="flex space-x-4">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="attending" value="yes" class="form-radio" required checked>
+                                    <span class="ml-2">Yes, I'll be there!</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="attending" value="no" class="form-radio" required>
+                                    <span class="ml-2">Unfortunately, no</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="guestCount" class="block text-sm font-medium mb-1">Number of Guests (including you)</label>
+                            <select id="guestCount" name="guestCount" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                <option value="1">1 (Just me)</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="events" class="block text-sm font-medium mb-2">Which events will you attend?</label>
+                        <div class="space-y-2">
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="events" value="mehndi" class="form-checkbox">
+                                <span class="ml-2">Mehndi Ceremony (April 26)</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="events" value="haldi" class="form-checkbox">
+                                <span class="ml-2">Haldi Ceremony (April 27 morning)</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="events" value="wedding" class="form-checkbox">
+                                <span class="ml-2">Baande Wedding Ceremony (April 27 evening)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="message" class="block text-sm font-medium mb-1">Message for the Couple (Optional)</label>
+                        <textarea id="message" name="message" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label for="dietaryRestrictions" class="block text-sm font-medium mb-1">Dietary Restrictions (Optional)</label>
+                        <input type="text" id="dietaryRestrictions" name="dietaryRestrictions" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Vegetarian, allergies, etc.">
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn primary-btn px-8 py-2">
+                            Submit RSVP
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
