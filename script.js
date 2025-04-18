@@ -1,4 +1,60 @@
-// Initialize everything when the page loads
+// Add loading overlay functions
+function showLoadingOverlay(message) {
+    // Create a loading overlay if it doesn't exist
+    let overlay = document.querySelector('.loading-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'loading-overlay fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 z-50';
+        overlay.innerHTML = `
+            <div class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+                <div class="spinner mb-4"></div>
+                <p class="text-lg font-medium">${message}</p>
+            </div>
+        `;
+        
+        // Add spinner style if not already in the document
+        if (!document.querySelector('#spinner-style')) {
+            const style = document.createElement('style');
+            style.id = 'spinner-style';
+            style.textContent = `
+                .spinner {
+                    border: 4px solid rgba(0, 0, 0, 0.1);
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    border-left-color: #506D2F;
+                    animation: spin 1s linear infinite;
+                }
+                
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(overlay);
+    } else {
+        // Update message if overlay already exists
+        const messageElement = overlay.querySelector('p');
+        if (messageElement) {
+            messageElement.textContent = message;
+        }
+        overlay.classList.remove('hidden');
+    }
+}
+
+function hideLoadingOverlay() {
+    const overlay = document.querySelector('.loading-overlay');
+    if (overlay) {
+        overlay.classList.add('hidden');
+        // Optionally remove after animation
+        setTimeout(() => {
+            overlay.remove();
+        }, 300);
+    }
+}// Initialize everything when the page loads
 window.onload = function() {
     setupCountdown();
     
@@ -88,61 +144,195 @@ function closePhotoModal() {
 function takePhoto() {
     // For mobile devices, access camera if available
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        alert("Opening camera. Please allow camera access if prompted. (This is a simulation - in the real version, this would access your camera)");
-        // Actual camera implementation would go here
-        // For now, just show a simulated photo
-        const preview = document.getElementById('preview');
-        if (preview) {
-            preview.src = "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80";
-            preview.classList.remove('hidden');
-            
-            const previewControls = document.getElementById('previewControls');
-            if (previewControls) {
-                previewControls.classList.remove('hidden');
-            }
-        }
+        showLoadingOverlay("Accessing camera...");
+        
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                hideLoadingOverlay();
+                
+                // Create camera view if it doesn't exist
+                let cameraView = document.getElementById('cameraView');
+                if (!cameraView) {
+                    cameraView = document.createElement('div');
+                    cameraView.id = 'cameraView';
+                    cameraView.className = 'fixed inset-0 bg-black z-50 flex flex-col';
+                    cameraView.innerHTML = `
+                        <div class="flex justify-end p-4">
+                            <button id="closeCameraBtn" class="text-white bg-gray-800 rounded-full p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="flex-1 relative">
+                            <video id="video" class="absolute inset-0 w-full h-full object-cover"></video>
+                        </div>
+                        <div class="p-4 flex justify-center">
+                            <button id="captureBtn" class="bg-white rounded-full p-4 shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                    document.body.appendChild(cameraView);
+                    
+                    // Set up close button
+                    document.getElementById('closeCameraBtn').addEventListener('click', function() {
+                        closeCameraView();
+                    });
+                    
+                    // Set up capture button
+                    document.getElementById('captureBtn').addEventListener('click', function() {
+                        capturePhoto(stream);
+                    });
+                } else {
+                    cameraView.classList.remove('hidden');
+                }
+                
+                // Hide the photo modal
+                closePhotoModal();
+                
+                // Set up video stream
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(err) {
+                hideLoadingOverlay();
+                console.error("Error accessing the camera", err);
+                showNotification("Could not access your camera. Please check permissions or try uploading instead.", "error");
+            });
     } else {
-        alert("Camera access not available on this device. Redirecting to Google Drive upload.");
+        showNotification("Camera not available on this device. Please use the upload option.", "error");
+        // Fall back to file upload
         uploadToGoogleDrive();
     }
 }
 
-function uploadToGoogleDrive() {
-    // Google Drive folder for wedding photos
-    // Replace this URL with your actual Google Drive folder link
-    const googleDriveLink = "https://drive.google.com/drive/folders/1eZTo3jd3sT_xNnaq1aA0TUa-f-L05EMG";
+function capturePhoto(stream) {
+    const video = document.getElementById('video');
     
-    // Open Google Drive in a new tab
-    window.open(googleDriveLink, '_blank');
+    // Create a canvas to capture the photo
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
     
-    // Optional: Show a confirmation message
-    showNotification("Opening Google Drive folder where you can upload your photos. Thank you for sharing your moments!");
+    // Get the data URL from the canvas
+    const photoData = canvas.toDataURL('image/jpeg');
+    
+    // Close camera view
+    closeCameraView();
+    
+    // Show loading overlay
+    showLoadingOverlay("Processing your photo...");
+    
+    // Simulate uploading the photo
+    setTimeout(() => {
+        hideLoadingOverlay();
+        showNotification("Thank you! Your wedding photo has been uploaded successfully.", "success");
+    }, 1500);
+    
+    // In a real implementation, you would send the photoData to your server/storage
+    /* ACTUAL IMPLEMENTATION WOULD BE SOMETHING LIKE:
+    fetch('/api/upload-camera-photo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ photo: photoData })
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideLoadingOverlay();
+        if (data.success) {
+            showNotification("Thank you! Your wedding photo has been uploaded successfully.", "success");
+        } else {
+            showNotification("There was an issue uploading your photo. Please try again.", "error");
+        }
+    })
+    .catch(error => {
+        hideLoadingOverlay();
+        showNotification("Upload failed. Please try again later.", "error");
+    });
+    */
 }
 
-// Simple file upload handler for testing
+function closeCameraView() {
+    const cameraView = document.getElementById('cameraView');
+    if (cameraView) {
+        // Stop all video streams
+        const video = document.getElementById('video');
+        if (video && video.srcObject) {
+            const tracks = video.srcObject.getTracks();
+            tracks.forEach(track => track.stop());
+            video.srcObject = null;
+        }
+        
+        cameraView.classList.add('hidden');
+        // Optionally remove it completely
+        setTimeout(() => {
+            cameraView.remove();
+        }, 300);
+    }
+}
+
+function uploadToGoogleDrive() {
+    // Show file picker dialog
+    document.getElementById('fileInput').click();
+}
+
+// Handle file uploads in the background
 document.addEventListener('DOMContentLoaded', function() {
     const fileInput = document.getElementById('fileInput');
     if (fileInput) {
         fileInput.addEventListener('change', function(e) {
             if (e.target.files.length > 0) {
-                // For demo purposes, just show a preview of the first file
-                const file = e.target.files[0];
-                const reader = new FileReader();
+                // Show upload in progress
+                showLoadingOverlay("Uploading your photos...");
                 
-                reader.onload = function(e) {
-                    const preview = document.getElementById('preview');
-                    if (preview) {
-                        preview.src = e.target.result;
-                        preview.classList.remove('hidden');
-                    }
-                    
-                    const previewControls = document.getElementById('previewControls');
-                    if (previewControls) {
-                        previewControls.classList.remove('hidden');
-                    }
-                };
+                // For demo purposes, simulate a background upload
+                setTimeout(() => {
+                    hideLoadingOverlay();
+                    showNotification("Thank you! Your photos have been added to our wedding collection.", "success");
+                    closePhotoModal();
+                }, 2000);
                 
-                reader.readAsDataURL(file);
+                // In a real implementation, you would use FormData and fetch/XMLHttpRequest to upload
+                // the files to your server or to Google Drive via API
+                
+                /* ACTUAL IMPLEMENTATION WOULD BE SOMETHING LIKE:
+                const formData = new FormData();
+                
+                // Append all selected files
+                for (let i = 0; i < e.target.files.length; i++) {
+                    formData.append('photos[]', e.target.files[i]);
+                }
+                
+                // Send to your server endpoint that handles the Google Drive upload
+                fetch('/api/upload-photos', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hideLoadingOverlay();
+                    if (data.success) {
+                        showNotification("Thank you! Your photos have been added to our wedding collection.", "success");
+                    } else {
+                        showNotification("There was an issue uploading your photos. Please try again.", "error");
+                    }
+                    closePhotoModal();
+                })
+                .catch(error => {
+                    hideLoadingOverlay();
+                    showNotification("Upload failed. Please try again later.", "error");
+                    closePhotoModal();
+                });
+                */
             }
         });
     }
