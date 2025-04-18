@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanma & Rahul's Wedding</title>
+    <title>Mountain Wedding Invitation</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -16,7 +16,7 @@
     <div class="main-container">
         <!-- Hero Image 1 -->
         <div class="hero-image">
-            <img src="images/coup1.jpg" alt="Sanma and Rahul">
+            <img src="/images/coup1.jpg" alt="Sanma and Rahul">
         </div>
         
         <!-- Couple Names -->
@@ -36,7 +36,7 @@
         
         <!-- Hero Image 2 -->
         <div class="hero-image">
-            <img src="images/coup2.jpg" alt="Couple portrait">
+            <img src="/images/coup2.jpg" alt="Couple portrait">
         </div>
         
         <!-- Our Journey -->
@@ -55,7 +55,7 @@
         
         <!-- Hero Image 3 -->
         <div class="hero-image">
-            <img src="images/hand.jpg" alt="Traditional ceremony">
+            <img src="/images/hand.jpg" alt="Traditional ceremony">
         </div>
         
         <!-- Traditional Celebrations -->
@@ -176,7 +176,7 @@
             <div class="bg-white p-4 rounded-lg shadow text-center">
                 <p class="mb-4">We would be honored to have you join us as we celebrate our wedding day!</p>
                 <p class="text-sm mb-4">Please RSVP by March 15, 2025</p>
-                <button class="btn primary-btn" onclick="openRSVPForm()">
+                <button class="btn primary-btn" onclick="alert('RSVP functionality will be available soon!')">
                     <i class="fas fa-envelope-open-text mr-2"></i>RSVP Now
                 </button>
             </div>
@@ -219,7 +219,7 @@
                 <button onclick="takePhoto()" class="btn primary-btn flex items-center">
                     <i class="fas fa-camera mr-2"></i>Take Photo
                 </button>
-                <button onclick="chooseFiles()" class="btn primary-btn flex items-center">
+                <button onclick="openCloudinaryWidget()" class="btn primary-btn flex items-center">
                     <i class="fas fa-upload mr-2"></i>Upload Photos
                 </button>
             </div>
@@ -234,6 +234,7 @@
         <input type="file" id="fileInput" multiple accept="image/*">
     </form>
 
+    <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
